@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Hoja de Vida Profesional</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        body {
+            background-color: #e9ecef;
+            font-family: 'Open Sans', sans-serif;
+            padding-bottom: 50px;
+        }
+
+        /* --- CONTROLES --- */
+        .admin-controls {
+            position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px;
+        }
+        .btn-float {
+            border-radius: 50px; padding: 10px 20px; font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: none; transition: 0.3s;
+        }
+        .btn-float:hover { transform: translateY(-3px); }
+
+        /* --- ANIMACIONES (Aquí está la magia) --- */
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes fillBar {
+            from { width: 0%; }
+        }
+
+        /* --- ESTRUCTURA DEL CV (Indestructible para PDF) --- */
+        #contenido-cv {
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            /* Usamos display table para asegurar que las columnas NO se rompan en el PDF */
+            display: table; 
+            width: 100%;
+            table-layout: fixed;
+            overflow: hidden; /* Limpieza */
+        }
+
+        /* COLUMNA IZQUIERDA */
+        .sidebar {
+            background-color: #2c3e50; /* Color de fondo fuerte */
+            color: white;
+            display: table-cell; /* Comportamiento de celda */
+            vertical-align: top;
+            width: 35%;
+            padding: 40px 25px;
+            /* Animación suave de entrada */
+            animation: slideInLeft 1s ease-out;
+        }
+
+        /* COLUMNA DERECHA */
+        .main-content {
+            background-color: #ffffff;
+            display: table-cell;
+            vertical-align: top;
+            width: 65%;
+            padding: 50px 40px;
+            /* Animación suave de entrada */
+            animation: slideInUp 1s ease-out;
+        }
+
+        /* --- ELEMENTOS CON ESTILO --- */
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+
+        .profile-pic-container { text-align: center; margin-bottom: 30px; animation: popIn 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+        .profile-icon {
+            font-size: 80px; color: #ecf0f1; background: rgba(255,255,255,0.1);
+            padding: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; color: #bdc3c7;
+            border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 10px; margin: 30px 0 20px 0;
+        }
+
+        .contact-item { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+        .contact-item i { color: #3498db; width: 20px; text-align: center; }
+        .contact-item a { color: white; text-decoration: none; }
+
+        .skill-item { margin-bottom: 15px; }
+        .progress-bg { background: rgba(255,255,255,0.2); height: 6px; border-radius: 3px; margin-top: 5px; overflow: hidden; }
+        .progress-fill { background-color: #3498db; height: 100%; animation: fillBar 1.5s ease-out; }
+
+        .main-name { font-size: 2.8rem; font-weight: 700; color: #2c3e50; line-height: 1; text-transform: uppercase; }
+        .main-subtitle { font-size: 1.2rem; color: #7f8c8d; margin-bottom: 30px; font-weight: 600; letter-spacing: 1px; }
+
+        .section-header {
+            font-size: 1.5rem; color: #2c3e50; font-weight: 700; margin: 40px 0 25px 0;
+            display: flex; align-items: center; gap: 15px;
+        }
+        .section-header::after { content: ''; flex: 1; height: 2px; background: #ecf0f1; }
+        .icon-box {
+            background: #2c3e50; color: white; width: 35px; height: 35px;
+            display: flex; align-items: center; justify-content: center; border-radius: 5px;
+        }
+
+        .timeline-item {
+            position: relative; padding-left: 20px; border-left: 2px solid #bdc3c7; margin-bottom: 30px;
+            /* Animación en cascada para los trabajos */
+            animation: slideInUp 1s ease-out;
+        }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -6px; top: 0; width: 10px; height: 10px;
+            background: #3498db; border-radius: 50%;
+        }
+        .job-title { font-weight: 700; font-size: 1.1rem; color: #2c3e50; }
+        .company-name { font-weight: 600; color: #3498db; }
+        .date-range { font-size: 0.85rem; color: #95a5a6; font-style: italic; margin-bottom: 10px; display: block; }
+        .job-desc { font-size: 0.95rem; color: #555; text-align: justify; }
+
+        /* CLASE ESPECIAL: Cuando se genera el PDF, anulamos animaciones para evitar errores visuales */
+        .generating-pdf * {
+            animation: none !important;
+            transition: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="admin-controls">
+        <button onclick="generarPDF()" class="btn-float btn-primary">
+            <i class="fas fa-download"></i> Descargar PDF
+        </button>
+        <a href="/" class="btn-float btn-light text-dark"><i class="fas fa-home"></i> Inicio</a>
+        {% if user.is_superuser %}
+            <a href="/admin/tasks/datospersonales/{{ perfil.id }}/change/" class="btn-float btn-warning text-dark"><i class="fas fa-pen"></i> Editar</a>
+        {% endif %}
+    </div>
+
+    <div id="contenido-cv">
+        {% if perfil %}
+        <div class="sidebar">
+            <div class="profile-pic-container">
+                <i class="fas fa-user profile-icon"></i>
+            </div>
+
+            <div class="sidebar-title">Contacto</div>
+            <div class="contact-item"><i class="fas fa-id-card"></i> <span>{{ perfil.numerocedula }}</span></div>
+            <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span>{{ perfil.direcciondomiciliaria }}</span></div>
+            <div class="contact-item"><i class="fas fa-phone"></i> <span>{{ perfil.telefonofijo }}</span></div>
+            {% if perfil.sitioweb %}
+            <div class="contact-item"><i class="fas fa-globe"></i> <a href="{{ perfil.sitioweb }}">{{ perfil.sitioweb }}</a></div>
+            {% endif %}
+
+            <div class="sidebar-title">Habilidades</div>
+            {% for hab in habilidades %}
+            <div class="skill-item">
+                <div class="skill-name" style="display: flex; justify-content: space-between;">
+                    <span>{{ hab.nombre }}</span> <span>{{ hab.nivel }}%</span>
+                </div>
+                <div class="progress-bg">
+                    <div class="progress-fill" style="width: {{ hab.nivel }}%"></div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="sidebar-title">Detalles</div>
+            <div class="contact-item"><i class="fas fa-flag"></i> <span>{{ perfil.nacionalidad }}</span></div>
+        </div>
+
+        <div class="main-content">
+            <h1 class="main-name">{{ perfil.nombres }}</h1>
+            <h1 class="main-name">{{ perfil.apellidos }}</h1>
+            <p class="main-subtitle">HOJA DE VIDA PROFESIONAL</p>
+
+            <div class="section-header">
+                <div class="icon-box"><i class="fas fa-user-tie"></i></div><span>Perfil</span>
+            </div>
+            <p style="color: #555; line-height: 1.7;">{{ perfil.descripcionperfil }}</p>
+
+            <div class="section-header">
+                <div class="icon-box"><i class="fas fa-briefcase"></i></div><span>Experiencia</span>
+            </div>
+            {% for exp in experiencias %}
+            <div class="timeline-item">
+                <div class="job-title">{{ exp.cargodesempenado }}</div>
+                <div class="company-name">{{ exp.nombrempresa }}</div>
+                <span class="date-range">{{ exp.fecha_inicio }} — {% if exp.fecha_fin %}{{ exp.fecha_fin }}{% else %}Actualidad{% endif %}</span>
+                <p class="job-desc">{{ exp.logros }}</p>
+            </div>
+            {% empty %}
+                <p class="text-muted">No hay experiencia registrada.</p>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="padding: 50px;"><h3>Perfil no encontrado</h3></div>
+        {% endif %}
+    </div>
+
+    <script>
+        function generarPDF() {
+            const elemento = document.getElementById('contenido-cv');
+            const btn = document.querySelector('.btn-primary');
+            
+            // 1. AVISAR AL USUARIO
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
+            
+            // 2. CONGELAR ANIMACIONES (Clave para que el PDF salga bien)
+            // Agregamos una clase que pone "animation: none" a todo
+            elemento.classList.add('generating-pdf');
+
+            // 3. CONFIGURAR PDF
+            const opciones = {
+                margin:       0,
+                filename:     'CV_{{ perfil.nombres }}.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    scrollY: 0,
+                    backgroundColor: '#ffffff' // Forzamos fondo blanco
+                },
+                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+            };
+
+            // 4. GENERAR Y LUEGO RESTAURAR
+            html2pdf().set(opciones).from(elemento).save().then(function(){
+                // Quitamos la clase para que las animaciones puedan volver si se recarga (opcional)
+                elemento.classList.remove('generating-pdf');
+                btn.innerHTML = '<i class="fas fa-download"></i> Descargar PDF';
+            });
+        }
+    </script>
+</body>
+</html>

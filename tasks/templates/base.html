@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selección de Perfil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Fondo oscuro elegante */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Botón Admin Flotante (Arriba Derecha) */
+        .btn-admin-top {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-admin-top:hover {
+            background: white;
+            color: #333;
+        }
+
+        /* Título Principal */
+        .main-title {
+            color: white;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-align: center;
+        }
+
+        /* Contenedor de tarjetas */
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1200px;
+        }
+
+        /* Diseño de la Tarjeta */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px); /* Efecto vidrio */
+            border-radius: 20px;
+            padding: 40px;
+            width: 300px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            color: white;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .profile-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #4facfe;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .profile-desc {
+            font-size: 0.9rem;
+            color: #ddd;
+            margin-bottom: 25px;
+        }
+
+        .btn-view {
+            background: #4facfe;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .btn-view:hover {
+            background: #00f2fe;
+            color: #0f2027;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/admin/" class="btn-admin-top">
+        <i class="fas fa-user-shield"></i> Ingreso Admin
+    </a>
+
+    <h1 class="main-title">Hojas de Vida Disponibles</h1>
+
+    <div class="cards-container">
+        
+        {% for p in perfiles %}
+            <div class="profile-card" onclick="location.href='{% url 'cv_view' p.id %}'">
+                <div class="profile-icon">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="profile-name">
+                    {{ p.nombres }} {{ p.apellidos }}
+                </div>
+                <div class="profile-desc">
+                    {{ p.nacionalidad }}
+                </div>
+                <a href="{% url 'cv_view' p.id %}" class="btn-view">Ver Perfil</a>
+            </div>
+        {% empty %}
+            <div class="alert alert-warning text-center w-50">
+                <h3>No hay perfiles creados</h3>
+                <p>Ingresa como Admin (botón arriba derecha) y agrega uno en "Datos Personales".</p>
+            </div>
+        {% endfor %}
+
+    </div>
+
+</body>
+</html>
