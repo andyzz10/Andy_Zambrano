@@ -1,0 +1,97 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Gestión de Portfolio{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            <span style="font-weight: bold; letter-spacing: 1px;">🚀 MI PORTFOLIO PRO</span>
+        </a>
+    </h1>
+{% endblock %}
+
+{% block extrastyle %}
+    <style>
+        /* --- 1. CABECERA CON ESTILO AURORA --- */
+        #header {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e) !important;
+            color: white;
+            padding: 20px;
+            border-bottom: 4px solid #00f260;
+        }
+
+        #branding h1 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 24px;
+        }
+
+        #header a:link, #header a:visited {
+            color: white !important;
+        }
+
+        /* --- 2. BARRA DE USUARIO (Arriba derecha) --- */
+        #user-tools {
+            color: #ccc;
+            font-size: 14px;
+        }
+
+        /* --- 3. BOTONES Y ENLACES --- */
+        /* Botones principales de acción */
+        .object-tools a.addlink {
+            background-color: #0575e6 !important;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .object-tools a.addlink:hover {
+            background-color: #00f260 !important;
+            color: #000 !important;
+        }
+
+        /* Botón Guardar */
+        .submit-row input {
+            background: #0575e6 !important;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .submit-row input:hover {
+            background: #00f260 !important;
+            color: black !important;
+            transform: translateY(-2px);
+        }
+
+        /* Botón Eliminar (Rojo elegante) */
+        .submit-row .deletelink {
+            background: #e74c3c !important;
+            color: white !important;
+            border-radius: 4px;
+            padding: 10px 15px;
+        }
+
+        /* --- 4. TABLAS Y MÓDULOS --- */
+        /* Títulos de las cajas azules */
+        .module caption {
+            background: #1a1a2e !important;
+        }
+        
+        /* Enlaces de las tablas */
+        div.breadcrumbs {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        a:link, a:visited {
+            color: #0575e6;
+        }
+
+        /* Hover en filas */
+        tr:hover td {
+            background-color: #e8f4fc !important;
+        }
+
+    </style>
+{% endblock %}

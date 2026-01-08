@@ -1,242 +1,249 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Hoja de Vida Profesional</title>
+    <title>Hoja de Vida Interactiva</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
 
     <style>
+        /* --- ESTILOS GENERALES --- */
         body {
-            background-color: #e9ecef;
             font-family: 'Open Sans', sans-serif;
-            padding-bottom: 50px;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%; animation: gradientBG 15s ease infinite;
+            min-height: 100vh; padding-bottom: 50px; overflow-x: hidden;
         }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-        /* --- CONTROLES --- */
-        .admin-controls {
-            position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 10px;
+        .admin-controls { position: fixed; top: 20px; right: 20px; z-index: 1000; display: flex; gap: 15px; }
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18); color: white; border-radius: 50px; padding: 10px 25px; 
+            font-weight: 700; box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); transition: 0.3s; text-decoration: none; cursor: pointer;
         }
-        .btn-float {
-            border-radius: 50px; padding: 10px 20px; font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); border: none; transition: 0.3s;
-        }
-        .btn-float:hover { transform: translateY(-3px); }
+        .btn-glass:hover { background: white; color: #333; transform: scale(1.1); }
 
-        /* --- ANIMACIONES (Aquí está la magia) --- */
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes fillBar {
-            from { width: 0%; }
-        }
+        .tilt-wrapper { perspective: 1000px; padding-top: 50px; display: flex; justify-content: center; padding-bottom: 50px; }
 
-        /* --- ESTRUCTURA DEL CV (Indestructible para PDF) --- */
         #contenido-cv {
-            max-width: 900px;
-            margin: 40px auto;
-            background: white;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
-            /* Usamos display table para asegurar que las columnas NO se rompan en el PDF */
-            display: table; 
-            width: 100%;
-            table-layout: fixed;
-            overflow: hidden; /* Limpieza */
+            max-width: 1000px; background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px); border-radius: 15px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            display: table; width: 100%; table-layout: fixed; overflow: hidden;
+            transform-style: preserve-3d; transform: perspective(1000px);
         }
 
-        /* COLUMNA IZQUIERDA */
-        .sidebar {
-            background-color: #2c3e50; /* Color de fondo fuerte */
-            color: white;
-            display: table-cell; /* Comportamiento de celda */
-            vertical-align: top;
-            width: 35%;
-            padding: 40px 25px;
-            /* Animación suave de entrada */
-            animation: slideInLeft 1s ease-out;
-        }
+        /* COLUMNAS */
+        .sidebar { background-color: #0f172a; color: white; display: table-cell; vertical-align: top; width: 32%; padding: 50px 30px; position: relative; }
+        .sidebar::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: linear-gradient(90deg, #00f260, #0575e6); }
+        .main-content { background-color: #ffffff; display: table-cell; vertical-align: top; width: 68%; padding: 60px 50px; }
 
-        /* COLUMNA DERECHA */
-        .main-content {
-            background-color: #ffffff;
-            display: table-cell;
-            vertical-align: top;
-            width: 65%;
-            padding: 50px 40px;
-            /* Animación suave de entrada */
-            animation: slideInUp 1s ease-out;
-        }
-
-        /* --- ELEMENTOS CON ESTILO --- */
+        /* ELEMENTOS */
         h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
-
-        .profile-pic-container { text-align: center; margin-bottom: 30px; animation: popIn 1.2s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
-        .profile-icon {
-            font-size: 80px; color: #ecf0f1; background: rgba(255,255,255,0.1);
-            padding: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3);
-        }
-
-        .sidebar-title {
-            font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; color: #bdc3c7;
-            border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 10px; margin: 30px 0 20px 0;
-        }
-
-        .contact-item { margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
-        .contact-item i { color: #3498db; width: 20px; text-align: center; }
-        .contact-item a { color: white; text-decoration: none; }
-
+        .profile-icon { font-size: 100px; color: #fff; background: linear-gradient(135deg, #0575e6, #021b79); padding: 30px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .sidebar-title { font-size: 1.1rem; text-transform: uppercase; letter-spacing: 2px; color: #94a3b8; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin: 40px 0 20px 0; font-weight: 800; }
+        .contact-item { margin-bottom: 18px; display: flex; align-items: center; gap: 15px; font-size: 0.9rem; color: #cbd5e1; }
         .skill-item { margin-bottom: 15px; }
-        .progress-bg { background: rgba(255,255,255,0.2); height: 6px; border-radius: 3px; margin-top: 5px; overflow: hidden; }
-        .progress-fill { background-color: #3498db; height: 100%; animation: fillBar 1.5s ease-out; }
+        .progress-bg { background: rgba(255,255,255,0.1); height: 6px; border-radius: 3px; margin-top: 5px; }
+        .progress-fill { background: linear-gradient(90deg, #38bdf8, #818cf8); height: 100%; width: 0%; animation: fillBar 2s forwards; }
+        @keyframes fillBar { to { width: var(--w); } }
 
-        .main-name { font-size: 2.8rem; font-weight: 700; color: #2c3e50; line-height: 1; text-transform: uppercase; }
-        .main-subtitle { font-size: 1.2rem; color: #7f8c8d; margin-bottom: 30px; font-weight: 600; letter-spacing: 1px; }
+        .main-name { font-size: 3.8rem; font-weight: 800; color: #0f172a; line-height: 0.9; text-transform: uppercase; letter-spacing: -2px; }
+        .typing-container { font-size: 1.5rem; color: #0ea5e9; margin-bottom: 40px; font-weight: 600; min-height: 30px; margin-top: 10px;}
+        .section-header { font-size: 1.6rem; color: #0f172a; font-weight: 800; margin: 50px 0 30px 0; display: flex; align-items: center; gap: 15px; }
+        .icon-box { background: #0f172a; color: white; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 10px; box-shadow: 4px 4px 0px #38bdf8; }
+        
+        .timeline-item { position: relative; padding-left: 30px; border-left: 3px solid #e2e8f0; margin-bottom: 35px; }
+        .timeline-item::before { content: ''; position: absolute; left: -9px; top: 6px; width: 15px; height: 15px; background: #fff; border: 4px solid #0ea5e9; border-radius: 50%; }
+        .job-title { font-weight: 800; font-size: 1.2rem; color: #1e293b; }
+        .company-name { font-weight: 700; color: #0ea5e9; font-size: 0.95rem; text-transform: uppercase; }
+        .date-range { font-size: 0.85rem; color: #64748b; font-weight: 600; margin-bottom: 8px; display: block; }
 
-        .section-header {
-            font-size: 1.5rem; color: #2c3e50; font-weight: 700; margin: 40px 0 25px 0;
-            display: flex; align-items: center; gap: 15px;
+        /* TARJETAS CERTIFICADOS */
+        .cert-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .cert-card { background: #f8fafc; padding: 20px; border-radius: 12px; border-left: 4px solid #0ea5e9; transition: 0.3s; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .cert-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .cert-title { font-weight: 800; color: #1e293b; font-size: 1rem; margin-bottom: 5px; }
+        .cert-place { font-size: 0.85rem; color: #64748b; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+        
+        .btn-cert {
+            display: inline-block; margin-top: 10px; font-size: 0.8rem; cursor: pointer;
+            color: #0ea5e9; font-weight: bold; text-decoration: none; border: 1px solid #0ea5e9;
+            padding: 5px 15px; border-radius: 20px; transition: 0.2s;
         }
-        .section-header::after { content: ''; flex: 1; height: 2px; background: #ecf0f1; }
-        .icon-box {
-            background: #2c3e50; color: white; width: 35px; height: 35px;
-            display: flex; align-items: center; justify-content: center; border-radius: 5px;
-        }
+        .btn-cert:hover { background: #0ea5e9; color: white; }
 
-        .timeline-item {
-            position: relative; padding-left: 20px; border-left: 2px solid #bdc3c7; margin-bottom: 30px;
-            /* Animación en cascada para los trabajos */
-            animation: slideInUp 1s ease-out;
-        }
-        .timeline-item::before {
-            content: ''; position: absolute; left: -6px; top: 0; width: 10px; height: 10px;
-            background: #3498db; border-radius: 50%;
-        }
-        .job-title { font-weight: 700; font-size: 1.1rem; color: #2c3e50; }
-        .company-name { font-weight: 600; color: #3498db; }
-        .date-range { font-size: 0.85rem; color: #95a5a6; font-style: italic; margin-bottom: 10px; display: block; }
-        .job-desc { font-size: 0.95rem; color: #555; text-align: justify; }
+        /* MODAL Y PDF */
+        .generating-pdf #contenido-cv { transform: none !important; box-shadow: none !important; margin: 0 !important; width: 100% !important; }
+        .generating-pdf .progress-fill { width: var(--w) !important; animation: none !important; }
+        .generating-pdf .cert-grid { display: block; } 
+        .generating-pdf .cert-card { margin-bottom: 10px; width: 45%; display: inline-block; vertical-align: top; }
+        .generating-pdf .btn-cert { display: none; } 
 
-        /* CLASE ESPECIAL: Cuando se genera el PDF, anulamos animaciones para evitar errores visuales */
-        .generating-pdf * {
-            animation: none !important;
-            transition: none !important;
+        /* Ajuste de imagen modal */
+        #imgCertificado { 
+            width: 100%; 
+            height: auto; 
+            border-radius: 8px; 
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3); 
         }
     </style>
 </head>
 <body>
 
     <div class="admin-controls">
-        <button onclick="generarPDF()" class="btn-float btn-primary">
-            <i class="fas fa-download"></i> Descargar PDF
-        </button>
-        <a href="/" class="btn-float btn-light text-dark"><i class="fas fa-home"></i> Inicio</a>
+        <button onclick="generarPDF()" class="btn-glass"><i class="fas fa-file-pdf"></i> Descargar PDF</button>
+        <a href="/" class="btn-glass"><i class="fas fa-home"></i> Inicio</a>
         {% if user.is_superuser %}
-            <a href="/admin/tasks/datospersonales/{{ perfil.id }}/change/" class="btn-float btn-warning text-dark"><i class="fas fa-pen"></i> Editar</a>
+            <a href="/admin/tasks/datospersonales/{{ perfil.id }}/change/" class="btn-glass"><i class="fas fa-pen"></i> Editar</a>
         {% endif %}
     </div>
 
-    <div id="contenido-cv">
-        {% if perfil %}
-        <div class="sidebar">
-            <div class="profile-pic-container">
-                <i class="fas fa-user profile-icon"></i>
+    <div class="tilt-wrapper">
+        <div id="contenido-cv" data-tilt data-tilt-max="3" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.1">
+            
+            {% if perfil %}
+            <div class="sidebar">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <i class="fas fa-user-astronaut profile-icon"></i>
+                </div>
+                <div class="sidebar-title"><i class="fas fa-address-card me-2"></i> Contacto</div>
+                <div class="contact-item"><i class="fas fa-id-card"></i> <span>{{ perfil.numerocedula }}</span></div>
+                <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span>{{ perfil.direcciondomiciliaria }}</span></div>
+                <div class="contact-item"><i class="fas fa-phone"></i> <span>{{ perfil.telefonofijo }}</span></div>
+                {% if perfil.sitioweb %}
+                <div class="contact-item"><i class="fas fa-globe"></i> <a href="{{ perfil.sitioweb }}">{{ perfil.sitioweb }}</a></div>
+                {% endif %}
+
+                <div class="sidebar-title"><i class="fas fa-bolt me-2"></i> Habilidades</div>
+                {% for hab in habilidades %}
+                <div class="skill-item">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: bold;">
+                        <span>{{ hab.nombre }}</span> <span>{{ hab.nivel }}%</span>
+                    </div>
+                    <div class="progress-bg"><div class="progress-fill" style="--w: {{ hab.nivel }}%;"></div></div>
+                </div>
+                {% endfor %}
+
+                <div class="sidebar-title"><i class="fas fa-language me-2"></i> Idiomas</div>
+                <div class="skill-item">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem;"><span>Español</span> <span>Nativo</span></div>
+                    <div class="progress-bg"><div class="progress-fill" style="--w: 100%;"></div></div>
+                </div>
+                <div class="skill-item">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.85rem;"><span>Inglés</span> <span>B1 Intermediate</span></div>
+                    <div class="progress-bg"><div class="progress-fill" style="--w: 60%;"></div></div>
+                </div>
             </div>
 
-            <div class="sidebar-title">Contacto</div>
-            <div class="contact-item"><i class="fas fa-id-card"></i> <span>{{ perfil.numerocedula }}</span></div>
-            <div class="contact-item"><i class="fas fa-map-marker-alt"></i> <span>{{ perfil.direcciondomiciliaria }}</span></div>
-            <div class="contact-item"><i class="fas fa-phone"></i> <span>{{ perfil.telefonofijo }}</span></div>
-            {% if perfil.sitioweb %}
-            <div class="contact-item"><i class="fas fa-globe"></i> <a href="{{ perfil.sitioweb }}">{{ perfil.sitioweb }}</a></div>
+            <div class="main-content">
+                <h1 class="main-name">{{ perfil.nombres }}</h1>
+                <h1 class="main-name">{{ perfil.apellidos }}</h1>
+                <div class="typing-container"><span id="typed-output"></span></div>
+
+                <div class="section-header"><div class="icon-box"><i class="fas fa-user-tie"></i></div><span>Perfil Profesional</span></div>
+                <p style="color: #475569; line-height: 1.8; font-size: 1.05rem; text-align: justify;">{{ perfil.descripcionperfil }}</p>
+
+                <div class="section-header"><div class="icon-box"><i class="fas fa-briefcase"></i></div><span>Experiencia Laboral</span></div>
+                {% for exp in experiencias %}
+                <div class="timeline-item">
+                    <div class="job-title">{{ exp.cargodesempenado }}</div>
+                    <span class="company-name">{{ exp.nombrempresa }}</span>
+                    <span class="date-range">{{ exp.fecha_inicio }} — {% if exp.fecha_fin %}{{ exp.fecha_fin }}{% else %}Actualidad{% endif %}</span>
+                    <p class="job-desc mt-2">{{ exp.logros }}</p>
+                </div>
+                {% empty %}
+                    <p class="text-muted">No hay experiencia registrada.</p>
+                {% endfor %}
+
+                <div class="section-header"><div class="icon-box"><i class="fas fa-graduation-cap"></i></div><span>Formación Académica</span></div>
+                <div class="timeline-item">
+                    <div class="job-title">Ingeniería en Tecnologías de la Información</div>
+                    <span class="company-name">Universidad Laica Eloy Alfaro de Manabí</span>
+                    <span class="date-range">2020 — Actualidad</span>
+                </div>
+                <div class="timeline-item">
+                    <div class="job-title">Bachiller en Ciencias</div>
+                    <span class="company-name">Unidad Educativa Fiscal Manta</span>
+                    <span class="date-range">2014 — 2020</span>
+                </div>
+
+                <div class="section-header"><div class="icon-box"><i class="fas fa-certificate"></i></div><span>Cursos y Certificaciones</span></div>
+                <div class="cert-grid">
+                    <div class="cert-card" style="border-left-color: #ffd700;">
+                        <div class="cert-title"><i class="fas fa-star text-warning me-1"></i> English Intermediate (B1)</div>
+                        <div class="cert-place"><i class="fas fa-university"></i> Rosetta Stone / LINKS S.A.</div>
+                        <div style="font-size: 0.8rem; color: #888; margin-top: 5px;">Octubre 2025</div>
+                        
+                        <span class="btn-cert" data-bs-toggle="modal" data-bs-target="#certificadoModal">
+                            <i class="fas fa-eye"></i> Ver Credencial
+                        </span>
+                    </div>
+
+                    <div class="cert-card">
+                        <div class="cert-title">Base de Datos SQL Server</div>
+                        <div class="cert-place"><i class="fas fa-database"></i> Microsoft Learn</div>
+                        <span class="btn-cert" style="cursor: default; background: #eee; color: #888; border-color: #eee;">
+                            <i class="fas fa-check"></i> Completado
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div style="padding: 50px;"><h3>Perfil no encontrado.</h3></div>
             {% endif %}
-
-            <div class="sidebar-title">Habilidades</div>
-            {% for hab in habilidades %}
-            <div class="skill-item">
-                <div class="skill-name" style="display: flex; justify-content: space-between;">
-                    <span>{{ hab.nombre }}</span> <span>{{ hab.nivel }}%</span>
-                </div>
-                <div class="progress-bg">
-                    <div class="progress-fill" style="width: {{ hab.nivel }}%"></div>
-                </div>
-            </div>
-            {% endfor %}
-
-            <div class="sidebar-title">Detalles</div>
-            <div class="contact-item"><i class="fas fa-flag"></i> <span>{{ perfil.nacionalidad }}</span></div>
         </div>
+    </div>
 
-        <div class="main-content">
-            <h1 class="main-name">{{ perfil.nombres }}</h1>
-            <h1 class="main-name">{{ perfil.apellidos }}</h1>
-            <p class="main-subtitle">HOJA DE VIDA PROFESIONAL</p>
-
-            <div class="section-header">
-                <div class="icon-box"><i class="fas fa-user-tie"></i></div><span>Perfil</span>
+    <div class="modal fade" id="certificadoModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-transparent border-0">
+                <div class="modal-body text-center position-relative">
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 z-3" data-bs-dismiss="modal" aria-label="Close" style="background-color: white; opacity: 1; filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));"></button>
+                    
+                    <img src="{% static 'certificado.png' %}" id="imgCertificado" alt="Certificado Rosetta Stone">
+                </div>
             </div>
-            <p style="color: #555; line-height: 1.7;">{{ perfil.descripcionperfil }}</p>
-
-            <div class="section-header">
-                <div class="icon-box"><i class="fas fa-briefcase"></i></div><span>Experiencia</span>
-            </div>
-            {% for exp in experiencias %}
-            <div class="timeline-item">
-                <div class="job-title">{{ exp.cargodesempenado }}</div>
-                <div class="company-name">{{ exp.nombrempresa }}</div>
-                <span class="date-range">{{ exp.fecha_inicio }} — {% if exp.fecha_fin %}{{ exp.fecha_fin }}{% else %}Actualidad{% endif %}</span>
-                <p class="job-desc">{{ exp.logros }}</p>
-            </div>
-            {% empty %}
-                <p class="text-muted">No hay experiencia registrada.</p>
-            {% endfor %}
         </div>
-        {% else %}
-        <div style="padding: 50px;"><h3>Perfil no encontrado</h3></div>
-        {% endif %}
     </div>
 
     <script>
+        var typed = new Typed('#typed-output', {
+            strings: ['Ingeniero de Software', 'Desarrollador Full Stack', 'Especialista en Bases de Datos'],
+            typeSpeed: 40, backSpeed: 30, loop: true
+        });
+
         function generarPDF() {
             const elemento = document.getElementById('contenido-cv');
-            const btn = document.querySelector('.btn-primary');
+            const body = document.body;
+            const btn = document.querySelector('.btn-glass');
             
-            // 1. AVISAR AL USUARIO
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generando...';
-            
-            // 2. CONGELAR ANIMACIONES (Clave para que el PDF salga bien)
-            // Agregamos una clase que pone "animation: none" a todo
-            elemento.classList.add('generating-pdf');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+            body.classList.add('generating-pdf');
+            if (elemento.vanillaTilt) elemento.vanillaTilt.destroy();
 
-            // 3. CONFIGURAR PDF
             const opciones = {
-                margin:       0,
-                filename:     'CV_{{ perfil.nombres }}.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { 
-                    scale: 2, 
-                    useCORS: true, 
-                    scrollY: 0,
-                    backgroundColor: '#ffffff' // Forzamos fondo blanco
-                },
-                jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+                margin: 0,
+                filename: 'CV_{{ perfil.nombres }}_Completo.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, scrollY: 0, backgroundColor: '#ffffff' },
+                jsPDF: { unit: 'in', format: 'legal', orientation: 'portrait' } 
             };
 
-            // 4. GENERAR Y LUEGO RESTAURAR
             html2pdf().set(opciones).from(elemento).save().then(function(){
-                // Quitamos la clase para que las animaciones puedan volver si se recarga (opcional)
-                elemento.classList.remove('generating-pdf');
-                btn.innerHTML = '<i class="fas fa-download"></i> Descargar PDF';
+                body.classList.remove('generating-pdf');
+                btn.innerHTML = '<i class="fas fa-file-pdf"></i> Descargar PDF';
+                VanillaTilt.init(document.querySelector("#contenido-cv"), { max: 3, speed: 400, glare: true, "max-glare": 0.1 });
             });
         }
     </script>
