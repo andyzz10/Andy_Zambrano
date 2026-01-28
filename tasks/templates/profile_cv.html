@@ -252,8 +252,14 @@
                         </button>
                         
                         <div class="pdf-visible-content">
-                            <img src="{{ rec.imagen.url }}" class="cert-img-pdf" alt="Certificado" 
-                                 onerror="this.src='{% static 'cert_titulo.jpg' %}'"> 
+                            {% if "ngli" in rec.titulo or "ngl" in rec.titulo %}
+                                <img src="{{ rec.imagen.url }}" class="cert-img-pdf" alt="Certificado Inglés" 
+                                     onerror="this.src='{% static 'cert_ingles.png' %}'"> 
+                            
+                            {% else %}
+                                <img src="{{ rec.imagen.url }}" class="cert-img-pdf" alt="Certificado" 
+                                     onerror="this.src='{% static 'cert_titulo.png' %}'"> 
+                            {% endif %}
                         </div>
                         {% endif %}
                     </div>
@@ -426,7 +432,7 @@
                 const safetyTimer = setTimeout(() => {
                     document.body.classList.remove('generating-pdf');
                     btn.innerHTML = originalText;
-                    alert("El PDF se tardó. Si faltan imágenes, Django las reemplazará para que no falle. Intenta de nuevo.");
+                    alert("El PDF se tardó un poco, pero intentamos generarlo con las imágenes de respaldo.");
                 }, 5000);
 
                 setTimeout(() => {
