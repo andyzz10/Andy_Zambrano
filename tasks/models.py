@@ -47,6 +47,49 @@ class Habilidad(models.Model):
     perfil = models.ForeignKey(DatosPersonales, on_delete=models.CASCADE, related_name='habilidades')
     nombre = models.CharField(max_length=50)
     nivel = models.PositiveIntegerField(default=50) 
-
+    porcentaje = models.IntegerField(default=50, verbose_name="Nivel (0-100)")
+    descripcion = models.TextField(verbose_name="Contexto Corto", blank=True, null=True, help_text="Ej: Uso avanzado para Data Science.")
     def __str__(self):
         return self.nombre
+    # --- Pégalo al final de models.py ---
+
+class Reconocimiento(models.Model):
+    perfil = models.ForeignKey(DatosPersonales, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=100, verbose_name="Título del Certificado")
+    institucion = models.CharField(max_length=100, verbose_name="Institución")
+    # Usaremos ImageField para que puedas subir la foto real desde el admin
+    imagen = models.ImageField(upload_to='certificados/', verbose_name="Foto del Título", null=True, blank=True)
+
+    def __str__(self):
+        return self.titulo
+    # --- Pégalo al final de models.py ---
+
+class Educacion(models.Model):
+    perfil = models.ForeignKey(DatosPersonales, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=100, verbose_name="Título Obtenido")
+    institucion = models.CharField(max_length=100, verbose_name="Institución Educativa")
+    fecha_inicio = models.DateField(null=True, blank=True, verbose_name="Fecha Inicio")
+    fecha_fin = models.DateField(null=True, blank=True, verbose_name="Fecha Fin (Dejar vacío si cursas actualmente)")
+    
+    def __str__(self):
+        return self.titulo
+    # --- AL FINAL DE models.py ---
+
+class ProductoGarage(models.Model):
+    nombre = models.CharField(max_length=100, verbose_name="Nombre del Producto")
+    descripcion = models.TextField(verbose_name="Descripción", blank=True)
+    precio = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Precio ($)")
+    imagen = models.ImageField(upload_to='garage/', verbose_name="Foto del Producto")
+    stock = models.IntegerField(default=1, verbose_name="Cantidad Disponible")
+
+    def __str__(self):
+        return f"{self.nombre} - ${self.precio}"
+    # --- AL FINAL DE models.py ---
+
+class RecursoAcademico(models.Model):
+    perfil = models.ForeignKey(DatosPersonales, on_delete=models.CASCADE)
+    titulo = models.CharField(max_length=100, verbose_name="Área (ej. Backend)")
+    descripcion = models.TextField(verbose_name="Tecnologías (ej. Django, APIs)")
+    icono = models.CharField(max_length=50, default="fas fa-book", verbose_name="Icono FontAwesome (ej. fab fa-python)")
+    def __str__(self):
+        return self.titulo

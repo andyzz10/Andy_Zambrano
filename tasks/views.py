@@ -4,12 +4,46 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .forms import TaskForm
-from .models import Task, DatosPersonales, ExperienciaLaboral, Habilidad 
+from .models import Task, DatosPersonales, ExperienciaLaboral, Habilidad, Reconocimiento, Educacion, ProductoGarage, RecursoAcademico
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
+# --- VISTAS PÚBLICAS (ACCESIBLES SIN LOGIN) ---
+
 def home(request):
-    return render(request, "home.html")
+    # Traemos todos los perfiles para que se vean siempre en la portada
+    perfiles = DatosPersonales.objects.all()
+    return render(request, "home.html", {'perfiles': perfiles})
+
+def welcome_view(request):
+    # Esta función ahora hace lo mismo que home para evitar errores en urls.py
+    perfiles = DatosPersonales.objects.all()
+    return render(request, 'home.html', {'perfiles': perfiles})
+
+def cv_view(request, profile_id):
+    # Vista detallada de un perfil específico
+    perfil = get_object_or_404(DatosPersonales, id=profile_id)
+    experiencias = ExperienciaLaboral.objects.filter(perfil=perfil).order_by('-fecha_inicio')
+    habilidades = Habilidad.objects.filter(perfil=perfil)
+    reconocimientos = Reconocimiento.objects.filter(perfil=perfil)
+    educacion = Educacion.objects.filter(perfil=perfil).order_by('-fecha_inicio')
+    productos = ProductoGarage.objects.all()
+    recursos = RecursoAcademico.objects.filter(perfil=perfil)
+    
+
+    context = {
+        'perfil': perfil,
+        'experiencias': experiencias,
+        'habilidades': habilidades,
+        'reconocimientos': reconocimientos,
+        'educacion': educacion,
+        'productos': productos,
+        'recursos': recursos
+        
+    }
+    return render(request, 'profile_cv.html', context)
+
+# --- SISTEMA DE USUARIOS ---
 
 def signup(request):
     if request.method == "GET":
@@ -28,12 +62,28 @@ def signup(request):
                 return render(request, "signup.html", {"form": UserCreationForm, "error": "Username already exists"})
         return render(request, "signup.html", {"form": UserCreationForm, "error": "Password do not match"})
 
+def signin(request):
+    if request.method == 'GET':
+        return render(request, 'signin.html', {'form': AuthenticationForm})
+    else:
+        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        if user is None:
+            return render(request, 'signin.html', {'form': AuthenticationForm, 'error':'Username or password is incorrect'})
+        else:
+            login(request, user)
+            return redirect('tasks')
+
+def signout(request):
+    logout(request)
+    return redirect('home')
+
+# --- GESTIÓN DE TAREAS (REQUIERE LOGIN) ---
+
 @login_required
 def tasks(request):
     tasks = Task.objects.filter(user=request.user, datecompleted__isnull=True)
     return render(request, 'tasks.html',{'tasks':tasks, 'tipopagina':'Tareas Pendientes'})
 
-# ESTA ES LA FUNCIÓN QUE TE ESTÁ DANDO ERROR, ASEGÚRATE DE COPIARLA BIEN:
 @login_required
 def tasks_completed(request):
     tasks = Task.objects.filter(user=request.user, datecompleted__isnull=False).order_by('-datecompleted')
@@ -81,43 +131,3 @@ def delete_task(request, task_id):
     if request.method == 'POST':
         task.delete()
         return redirect('tasks')
-
-def signout(request):
-    logout(request)
-    return redirect('home')
-
-def signin(request):
-    if request.method == 'GET':
-        return render(request, 'signin.html', {'form': AuthenticationForm})
-    else:
-        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
-        if user is None:
-            return render(request, 'signin.html', {'form': AuthenticationForm, 'error':'Username or password is incorrect'})
-        else:
-            login(request, user)
-            return redirect('tasks')
-
-# VISTA PARA EL PERFIL INTERACTIVO
-# --- ESTO ES LO NUEVO ---
-
-# --- REEMPLAZA CON ESTO AL FINAL DE TU ARCHIVO ---
-
-# 1. Bienvenida: Ahora busca TODOS los perfiles para hacer la lista
-def welcome_view(request):
-    perfiles = DatosPersonales.objects.all()
-    return render(request, 'base.html', {'perfiles': perfiles})
-
-# 2. CV Individual: Ahora recibe un ID para saber EXACTAMENTE cuál mostrar
-def cv_view(request, profile_id):
-    # Busca el perfil que coincida con el ID (si no existe, da error 404)
-    perfil = get_object_or_404(DatosPersonales, id=profile_id)
-    
-    experiencias = ExperienciaLaboral.objects.filter(perfil=perfil).order_by('-fecha_inicio')
-    habilidades = Habilidad.objects.filter(perfil=perfil)
-    
-    context = {
-        'perfil': perfil,
-        'experiencias': experiencias,
-        'habilidades': habilidades
-    }
-    return render(request, 'profile_cv.html', context)
