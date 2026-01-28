@@ -3,7 +3,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Hoja de Vida | Andy Zambrano</title>
+    <title>Hoja de Vida | {{ perfil.nombres }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -127,6 +127,12 @@
             <i class="fas fa-shopping-cart"></i> Garage
         </button>
         <a href="/" class="btn-float"><i class="fas fa-home"></i> Inicio</a>
+        {% if user.is_authenticated %}
+            <a href="/logout/" class="btn-float text-danger" style="border-color: #dc3545; color: #dc3545;"><i class="fas fa-sign-out-alt"></i> Salir</a>
+            <a href="/admin/" class="btn-float" style="border-color: #198754; color: #198754;"><i class="fas fa-cog"></i> Editar</a>
+        {% else %}
+            <a href="/signin/" class="btn-float"><i class="fas fa-user"></i> Login</a>
+        {% endif %}
         <a href="#" onclick="generarPDF()" class="btn-float btn-pdf"><i class="fas fa-file-pdf"></i> PDF</a>
     </div>
 
@@ -134,7 +140,7 @@
         <div class="profile-photo-container">
             <img src="{% static 'perfil_andy.jpeg' %}" alt="Foto" class="profile-photo" onerror="this.src='https://via.placeholder.com/150'">
         </div>
-        <div class="profile-name">Andy Zambrano</div>
+        <div class="profile-name">{{ perfil.nombres }} {{ perfil.apellidos }}</div>
         <div class="profile-title">Estudiante de TI</div>
         <hr class="my-4" style="opacity: 0.1;">
         <div class="nav flex-column nav-pills">
@@ -153,23 +159,22 @@
             <div class="info-card">
                 <div class="icon-header"><i class="fas fa-user-circle"></i> Perfil Profesional</div>
                 <p class="text-muted mb-0" style="text-align: justify; line-height: 1.8;">
-                    Estudiante de la carrera de <strong>Tecnología de la Información</strong> en la <strong>Universidad Laica Eloy Alfaro de Manabí (ULEAM)</strong>. 
-                    Enfocado en Backend con Django y Bases de Datos.
+                    {{ perfil.perfil_profesional|default:"Estudiante de la carrera de Tecnología de la Información..." }}
                 </p>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="info-card h-100">
                         <div class="icon-header"><i class="fas fa-id-card"></i> Datos</div>
-                        <div class="mb-3"><span class="info-label">Cédula:</span> <span class="info-value">1351491830</span></div>
-                        <div class="mb-3"><span class="info-label">Nacionalidad:</span> <span class="info-value">Ecuatoriana</span></div>
+                        <div class="mb-3"><span class="info-label">Cédula:</span> <span class="info-value">{{ perfil.numerocedula }}</span></div>
+                        <div class="mb-3"><span class="info-label">Nacionalidad:</span> <span class="info-value">{{ perfil.nacionalidad|default:"Ecuatoriana" }}</span></div>
                         <div class="mb-3"><span class="info-label">Nacimiento:</span> <span class="info-value">15 Agosto 2005</span></div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="info-card h-100">
                         <div class="icon-header"><i class="fas fa-envelope"></i> Contacto</div>
-                        <div class="mb-3"><span class="info-label">Teléfono:</span> <span class="info-value">0979235527</span></div>
+                        <div class="mb-3"><span class="info-label">Teléfono:</span> <span class="info-value">{{ perfil.telefonofijo }}</span></div>
                         <div class="mb-3"><span class="info-label">Email:</span> <span class="info-value">andy@ejemplo.com</span></div>
                         <div class="mb-3"><span class="info-label">Portafolio Web:</span> 
                             <a href="https://github.com/andyzz10/" target="_blank" class="text-primary text-decoration-none fw-bold">Visitar <i class="fas fa-external-link-alt small"></i></a>
@@ -182,102 +187,80 @@
         <section id="recursos">
             <div class="section-header"><h2>Recursos Académicos</h2></div>
             <div class="info-card">
-                
+                {% for rec in recursos %}
                 <div class="recurso-item">
-                    <span class="recurso-titulo"><i class="fas fa-server me-2 text-primary"></i> BackEnd</span>
-                    Desarrollo Backend Avanzado. Creación de APIs RESTful y aplicaciones monolíticas utilizando Django Framework. Implementación de autenticación, vistas basadas en clases y ORM.
+                    <span class="recurso-titulo">
+                        <i class="{{ rec.icono }} me-2 text-primary"></i> {{ rec.titulo }}
+                    </span>
+                    {{ rec.descripcion }}
                 </div>
-
-                <div class="recurso-item">
-                    <span class="recurso-titulo"><i class="fas fa-database me-2 text-primary"></i> Bases de Datos</span>
-                    Gestión de Bases de Datos. Diseño y normalización de esquemas. Dominio de consultas complejas (Joins, Stored Procedures) en PostgreSQL, SQL Server y Oracle.
-                </div>
-
-                <div class="recurso-item">
-                    <span class="recurso-titulo"><i class="fas fa-microchip me-2 text-primary"></i> Hardware / IoT</span>
-                    IoT y Hardware. Programación de microcontroladores ESP32 y Arduino para proyectos de domótica y robótica (Sensores, Pantallas OLED, Motores y Robot Otto).
-                </div>
-
+                {% empty %}
+                <p class="text-center text-muted">No hay recursos. ¡Agrégalos desde el Admin!</p>
+                {% endfor %}
             </div>
         </section>
 
         <section id="experiencia">
             <div class="section-header"><h2>Experiencia Laboral</h2></div>
             <div class="info-card">
-                
+                {% for exp in experiencias %}
                 <div class="exp-item border-start border-3 border-primary ps-3 mb-4">
-                    <h5 class="fw-bold">Desarrollador Backend Junior (Freelance)</h5>
-                    <div class="text-primary mb-1">Proyectos Personales</div>
-                    <small class="text-muted d-block mb-2"><i class="far fa-calendar-alt"></i> Ene 2024 - Presente</small>
-                    <p class="mb-0 text-muted">Desarrollo y despliegue de portafolios web dinámicos utilizando Django y PostgreSQL en Render. Implementación de tiendas virtuales con lógica de frontend y backend.</p>
+                    <h5 class="fw-bold">{{ exp.cargodesempenado }}</h5>
+                    <div class="text-primary mb-1">{{ exp.nombrempresa }}</div>
+                    <small class="text-muted d-block mb-2"><i class="far fa-calendar-alt"></i> {{ exp.fecha_inicio }}</small>
+                    <p class="mb-0 text-muted">{{ exp.logros }}</p>
                 </div>
-
-                <div class="exp-item border-start border-3 border-primary ps-3 mb-4">
-                    <h5 class="fw-bold">Desarrollador IoT & Hardware</h5>
-                    <div class="text-primary mb-1">Universidad Laica Eloy Alfaro de Manabí (ULEAM)</div>
-                    <small class="text-muted d-block mb-2"><i class="far fa-calendar-alt"></i> May 2023 - Dic 2023</small>
-                    <p class="mb-0 text-muted">Programación de sistemas embebidos con ESP32 y Arduino. Creación de robots interactivos (Otto) y sistemas de monitoreo con sensores y matrices LED.</p>
-                </div>
-
+                {% empty %}
+                <p class="text-center text-muted">No hay experiencia registrada.</p>
+                {% endfor %}
             </div>
         </section>
 
         <section id="educacion">
             <div class="section-header"><h2>Formación Académica</h2></div>
             <div class="info-card">
-                
+                {% for edu in educacion %}
                 <div class="d-flex align-items-center mb-4">
                     <div class="bg-primary text-white rounded p-3 me-3"><i class="fas fa-graduation-cap fa-lg"></i></div>
                     <div>
-                        <h5 class="mb-0 fw-bold">Tecnologías de la Información</h5>
-                        <span class="text-muted d-block">Universidad Laica Eloy Alfaro de Manabí (ULEAM)</span>
-                        <small class="text-secondary">2023 - Presente</small>
+                        <h5 class="mb-0 fw-bold">{{ edu.titulo }}</h5>
+                        <span class="text-muted d-block">{{ edu.institucion }}</span>
+                        <small class="text-secondary">{{ edu.fecha_inicio|date:"Y" }} - {% if edu.fecha_fin %}{{ edu.fecha_fin|date:"Y" }}{% else %}Presente{% endif %}</small>
                     </div>
                 </div>
-
+                {% empty %}
+                <p class="text-center text-muted">No hay educación registrada.</p>
+                {% endfor %}
             </div>
         </section>
 
         <section id="reconocimientos">
             <div class="section-header"><h2>Cursos y Certificaciones</h2></div>
             <div class="row">
-                
+                {% for rec in reconocimientos %}
                 <div class="col-md-6 mb-3">
                     <div class="info-card h-100 position-relative">
                         <div class="icon-header text-warning"><i class="fas fa-award"></i> Certificación</div>
-                        <h5 class="fw-bold">English Intermediate (B1)</h5>
-                        <p class="text-muted">Universidad Laica Eloy Alfaro de Manabí (ULEAM)</p>
+                        <h5 class="fw-bold">{{ rec.titulo }}</h5>
+                        <p class="text-muted">{{ rec.institucion }}</p>
                         
+                        {% if rec.imagen %}
                         <button class="btn btn-outline-primary btn-sm btn-ver-cert mt-2" 
                                 type="button" data-bs-toggle="modal" data-bs-target="#certificadoModal" 
-                                data-bs-img="{% static 'cert_ingles.png' %}">
+                                data-bs-img="{{ rec.imagen.url }}">
                             <i class="fas fa-eye"></i> Ver Credencial
                         </button>
                         
                         <div class="pdf-visible-content">
-                            <img src="{% static 'cert_ingles.png' %}" class="cert-img-pdf" alt="Certificado" onerror="this.style.display='none'">
+                            <img src="{{ rec.imagen.url }}" class="cert-img-pdf" alt="Certificado" 
+                                 onerror="this.src='{% static 'cert_titulo.jpg' %}'"> 
                         </div>
+                        {% endif %}
                     </div>
                 </div>
-
-                <div class="col-md-6 mb-3">
-                    <div class="info-card h-100 position-relative">
-                        <div class="icon-header text-warning"><i class="fas fa-award"></i> Certificación</div>
-                        <h5 class="fw-bold">TITULO BACHILLER EN TI</h5>
-                        <p class="text-muted">Unidad Educativa Fiscal Manta</p>
-                        
-                        <button class="btn btn-outline-primary btn-sm btn-ver-cert mt-2" 
-                                type="button" data-bs-toggle="modal" data-bs-target="#certificadoModal" 
-                                data-bs-img="{% static 'cert_titulo.png' %}">
-                            <i class="fas fa-eye"></i> Ver Credencial
-                        </button>
-                        
-                        <div class="pdf-visible-content">
-                            <img src="{% static 'cert_titulo.png' %}" class="cert-img-pdf" alt="Certificado" onerror="this.style.display='none'">
-                        </div>
-                    </div>
-                </div>
-
+                {% empty %}
+                <div class="col-12 text-center text-muted"><p>No hay reconocimientos.</p></div>
+                {% endfor %}
             </div>
         </section>
 
@@ -287,67 +270,23 @@
                 <div class="icon-header"><i class="fas fa-rocket"></i> Competencias Clave</div>
                 
                 <div class="tech-container">
+                    {% for hab in habilidades %}
                     
                     <button class="tech-badge border-0" type="button" data-bs-toggle="modal" data-bs-target="#skillModal"
-                            data-bs-nombre="🐍 Python Backend" data-bs-nivel="90" 
-                            data-bs-desc="Desarrollo de lógica de servidor robusta, scripts de automatización y procesamiento de datos eficiente.">
-                        <i class="fas fa-check-circle"></i> 🐍 Python Backend
+                            data-bs-nombre="{{ hab.nombre|escape }}"
+                            data-bs-nivel="{{ hab.porcentaje }}"
+                            data-bs-desc="{{ hab.descripcion|default:'Sin descripción.'|escape }}">
+                        <i class="fas fa-check-circle"></i> {{ hab.nombre }}
                     </button>
+
                     <div class="pdf-visible-content skill-item-pdf">
-                        <div class="skill-title-pdf"><i class="fas fa-check"></i> 🐍 Python Backend (90%)</div>
-                        <div class="skill-desc-pdf">Desarrollo de lógica de servidor robusta y automatización.</div>
+                        <div class="skill-title-pdf"><i class="fas fa-check"></i> {{ hab.nombre }} ({{ hab.porcentaje }}%)</div>
+                        <div class="skill-desc-pdf">{{ hab.descripcion|default:"Manejo competente." }}</div>
                     </div>
 
-                    <button class="tech-badge border-0" type="button" data-bs-toggle="modal" data-bs-target="#skillModal"
-                            data-bs-nombre="🚀 Django Framework" data-bs-nivel="85" 
-                            data-bs-desc="Creación de aplicaciones web completas y APIs RESTful seguras. Manejo experto del ORM y despliegue.">
-                        <i class="fas fa-check-circle"></i> 🚀 Django Framework
-                    </button>
-                    <div class="pdf-visible-content skill-item-pdf">
-                        <div class="skill-title-pdf"><i class="fas fa-check"></i> 🚀 Django Framework (85%)</div>
-                        <div class="skill-desc-pdf">Creación de aplicaciones web completas y APIs RESTful seguras.</div>
-                    </div>
-
-                    <button class="tech-badge border-0" type="button" data-bs-toggle="modal" data-bs-target="#skillModal"
-                            data-bs-nombre="🗄️ Bases de Datos (SQL)" data-bs-nivel="80" 
-                            data-bs-desc="Diseño de esquemas en PostgreSQL, Oracle y SQL Server. Escritura de consultas complejas para reportes.">
-                        <i class="fas fa-check-circle"></i> 🗄️ Bases de Datos (SQL)
-                    </button>
-                    <div class="pdf-visible-content skill-item-pdf">
-                        <div class="skill-title-pdf"><i class="fas fa-check"></i> 🗄️ Bases de Datos (SQL) (80%)</div>
-                        <div class="skill-desc-pdf">Diseño de esquemas en PostgreSQL, Oracle y SQL Server.</div>
-                    </div>
-
-                    <button class="tech-badge border-0" type="button" data-bs-toggle="modal" data-bs-target="#skillModal"
-                            data-bs-nombre="🤖 Arduino & ESP32" data-bs-nivel="85" 
-                            data-bs-desc="Integración de software con el mundo físico. Programación de sensores y actuadores para IoT y robótica.">
-                        <i class="fas fa-check-circle"></i> 🤖 Arduino & ESP32
-                    </button>
-                    <div class="pdf-visible-content skill-item-pdf">
-                        <div class="skill-title-pdf"><i class="fas fa-check"></i> 🤖 Arduino & ESP32 (85%)</div>
-                        <div class="skill-desc-pdf">Integración de software con el mundo físico. IoT y robótica.</div>
-                    </div>
-
-                    <button class="tech-badge border-0" type="button" data-bs-toggle="modal" data-bs-target="#skillModal"
-                            data-bs-nombre="☕ Java & POO" data-bs-nivel="75" 
-                            data-bs-desc="Bases sólidas en Programación Orientada a Objetos. Desarrollo de aplicaciones y reportes con JasperReports.">
-                        <i class="fas fa-check-circle"></i> ☕ Java & POO
-                    </button>
-                    <div class="pdf-visible-content skill-item-pdf">
-                        <div class="skill-title-pdf"><i class="fas fa-check"></i> ☕ Java & POO (75%)</div>
-                        <div class="skill-desc-pdf">Programación Orientada a Objetos y JasperReports.</div>
-                    </div>
-
-                    <button class="tech-badge border-0" type="button" data-bs-toggle="modal" data-bs-target="#skillModal"
-                            data-bs-nombre="🐙 Git / GitHub" data-bs-nivel="80" 
-                            data-bs-desc="Control de versiones profesional. Manejo de ramas, resolución de conflictos y colaboración en equipo.">
-                        <i class="fas fa-check-circle"></i> 🐙 Git / GitHub
-                    </button>
-                    <div class="pdf-visible-content skill-item-pdf">
-                        <div class="skill-title-pdf"><i class="fas fa-check"></i> 🐙 Git / GitHub (80%)</div>
-                        <div class="skill-desc-pdf">Control de versiones profesional y trabajo en equipo.</div>
-                    </div>
-
+                    {% empty %}
+                    <p class="text-muted">No hay habilidades registradas.</p>
+                    {% endfor %}
                 </div>
             </div>
         </section>
@@ -368,38 +307,29 @@
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
                 <div class="modal-header text-white" style="background: var(--garage-color);">
-                    <h5 class="modal-title fw-bold"><i class="fas fa-store"></i> Garage de Andy Zambrano</h5>
+                    <h5 class="modal-title fw-bold"><i class="fas fa-store"></i> Garage de {{ perfil.nombres }}</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body bg-light p-4">
                     <div class="row">
+                        {% for prod in productos %}
                         <div class="col-md-4 mb-4">
                             <div class="product-card">
-                                <img src="{% static 'ventilador.jpg' %}" class="product-img" alt="Ventilador" onerror="this.src='https://via.placeholder.com/150?text=Ventilador'">
-                                <h5 class="fw-bold text-dark">Ventilador Gamer</h5>
-                                <p class="text-muted small">Refrigeración líquida para sesiones intensas.</p>
-                                <div class="product-price">$30.00</div>
+                                {% if prod.imagen %}
+                                    <img src="{{ prod.imagen.url }}" class="product-img" alt="{{ prod.nombre }}" 
+                                         onerror="this.src='{% static 'ventilador.jpg' %}'">
+                                {% else %}
+                                    <img src="{% static 'ventilador.jpg' %}" class="product-img" alt="Sin foto">
+                                {% endif %}
+                                <h5 class="fw-bold text-dark">{{ prod.nombre }}</h5>
+                                <p class="text-muted small">{{ prod.descripcion|truncatechars:50 }}</p>
+                                <div class="product-price">${{ prod.precio }}</div>
                                 <button class="btn btn-warning w-100 fw-bold rounded-pill text-white"><i class="fas fa-cart-plus"></i> Comprar</button>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="product-card">
-                                <img src="{% static 'laptop.jpg' %}" class="product-img" alt="Laptop" onerror="this.src='https://via.placeholder.com/150?text=Laptop'">
-                                <h5 class="fw-bold text-dark">Laptop MSI</h5>
-                                <p class="text-muted small">Potencia extrema para ingeniería y juegos.</p>
-                                <div class="product-price">$1100.00</div>
-                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white"><i class="fas fa-cart-plus"></i> Comprar</button>
-                            </div>
-                        </div>
-                        <div class="col-md-4 mb-4">
-                            <div class="product-card">
-                                <img src="{% static 'mouse.jpg' %}" class="product-img" alt="Mouse" onerror="this.src='https://via.placeholder.com/150?text=Mouse'">
-                                <h5 class="fw-bold text-dark">Mouse Logitech</h5>
-                                <p class="text-muted small">Alta precisión y DPI ajustable.</p>
-                                <div class="product-price">$40.00</div>
-                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white"><i class="fas fa-cart-plus"></i> Comprar</button>
-                            </div>
-                        </div>
+                        {% empty %}
+                        <div class="col-12 text-center py-5"><h4 class="text-muted">El garage está vacío. Agrégale productos en Django Admin.</h4></div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -496,7 +426,7 @@
                 const safetyTimer = setTimeout(() => {
                     document.body.classList.remove('generating-pdf');
                     btn.innerHTML = originalText;
-                    alert("El PDF está tardando. Verifica que las fotos (cert_ingles.png, etc) estén en la carpeta static.");
+                    alert("El PDF se tardó. Si faltan imágenes, Django las reemplazará para que no falle. Intenta de nuevo.");
                 }, 5000);
 
                 setTimeout(() => {
