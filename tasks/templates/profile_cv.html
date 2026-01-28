@@ -63,7 +63,7 @@
         .tech-badge:hover { background: var(--primary-color); color: white; transform: translateY(-3px); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); z-index: 51; }
 
         /* --- ELEMENTOS OCULTOS QUE SOLO SALEN EN PDF --- */
-        .pdf-visible-content { display: none; } /* Oculto normalmente */
+        .pdf-visible-content { display: none; } 
 
         /* --- BOTONES SUPERIORES --- */
         .top-buttons { position: fixed; top: 30px; right: 30px; z-index: 1001; display: flex; gap: 15px; }
@@ -81,7 +81,7 @@
         @media (max-width: 991px) { .sidebar { width: 100%; position: relative; height: auto; } .main-content { margin-left: 0; padding: 20px; } .top-buttons { position: relative; top: 0; right: 0; margin-bottom: 20px; justify-content: center; flex-wrap: wrap;} }
         
         /* ========================================= */
-        /* MAGIA PARA EL PDF (EXPANSIÓN)           */
+        /* CSS LIMPIO Y CORREGIDO PARA PDF          */
         /* ========================================= */
         .generating-pdf * {
             animation: none !important; transition: none !important; opacity: 1 !important; 
@@ -89,43 +89,32 @@
         }
         .generating-pdf body { background-color: #ffffff !important; -webkit-print-color-adjust: exact; }
         
-        /* Layout PDF */
         .generating-pdf .sidebar { position: absolute; left: 0; top: 0; height: 100%; background: #f8f9fa !important; border-right: 1px solid #ccc !important; }
         .generating-pdf .main-content { margin-left: 280px !important; padding: 20px !important; background: white !important; }
         
-        /* Ocultar botones interactivos en PDF */
         .generating-pdf .top-buttons, 
-        .generating-pdf button.tech-badge, /* Ocultamos el botón pequeño de la habilidad */
-        .generating-pdf .btn-ver-cert,     /* Ocultamos el botón "Ver Credencial" */
+        .generating-pdf button.tech-badge,
+        .generating-pdf .btn-ver-cert,     
         .generating-pdf .btn-garage { display: none !important; }
 
-        /* MOSTRAR LO OCULTO */
         .generating-pdf .pdf-visible-content { 
             display: block !important; 
-            margin-top: 10px;
-            padding: 10px;
-            border: 1px solid #eee;
-            background: #fafafa;
-            border-radius: 8px;
+            margin-top: 10px; padding: 10px;
+            border: 1px solid #eee; background: #fafafa; border-radius: 8px;
         }
 
-        /* Estilo especial para la imagen del certificado en PDF */
         .generating-pdf .cert-img-pdf {
-            width: 100%; max-width: 300px; /* Tamaño controlado */
-            height: auto;
-            display: block; margin: 10px auto;
+            width: 100%; max-width: 300px; 
+            height: auto; display: block; margin: 10px auto;
             border: 5px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2) !important;
         }
 
-        /* Estilo especial para Habilidades en PDF (Lista en vez de burbujas) */
         .generating-pdf .skill-item-pdf {
-            margin-bottom: 15px; border-left: 4px solid var(--primary-color);
-            padding-left: 15px;
+            margin-bottom: 15px; border-left: 4px solid var(--primary-color); padding-left: 15px;
         }
         .generating-pdf .skill-title-pdf { font-weight: bold; color: var(--primary-color); font-size: 1.1rem; }
         .generating-pdf .skill-desc-pdf { color: #333; font-size: 0.95rem; text-align: justify; }
 
-        /* Textos oscuros */
         .generating-pdf h2 { color: #ec4899 !important; }
         .generating-pdf h5, .generating-pdf .fw-bold { color: #000 !important; }
         .generating-pdf p, .generating-pdf small { color: #222 !important; }
@@ -323,61 +312,65 @@
                 </div>
                 <div class="modal-body bg-light p-4">
                     <div class="row">
-                        <div class="modal fade" id="garageModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
-                <div class="modal-header text-white" style="background: var(--garage-color);">
-                    <h5 class="modal-title fw-bold"><i class="fas fa-store"></i> Garage de {{ perfil.nombres }}</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body bg-light p-4">
-                    <div class="row">
-                        
                         <div class="col-md-4 mb-4">
                             <div class="product-card">
                                 <img src="{% static 'ventilador.jpg' %}" class="product-img" alt="Ventilador" onerror="this.src='https://via.placeholder.com/150?text=Ventilador'">
                                 <h5 class="fw-bold text-dark">Ventilador Gamer</h5>
-                                <p class="text-muted small">Ventilador para evitar sobrecalentamientos en laptops de alto rendimiento.</p>
+                                <p class="text-muted small">Refrigeración líquida para sesiones intensas.</p>
                                 <div class="product-price">$30.00</div>
-                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white" onclick="alert('Opción en desarrollo.')">
-                                    <i class="fas fa-cart-plus"></i> Comprar
-                                </button>
+                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white"><i class="fas fa-cart-plus"></i> Comprar</button>
                             </div>
                         </div>
-
                         <div class="col-md-4 mb-4">
                             <div class="product-card">
                                 <img src="{% static 'laptop.jpg' %}" class="product-img" alt="Laptop" onerror="this.src='https://via.placeholder.com/150?text=Laptop'">
-                                <h5 class="fw-bold text-dark">Laptop Gamer MSI</h5>
-                                <p class="text-muted small">Laptop potente que podrá correr cualquier tipo de programa de ingeniería.</p>
+                                <h5 class="fw-bold text-dark">Laptop MSI</h5>
+                                <p class="text-muted small">Potencia extrema para ingeniería y juegos.</p>
                                 <div class="product-price">$1100.00</div>
-                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white" onclick="alert('Opción en desarrollo.')">
-                                    <i class="fas fa-cart-plus"></i> Comprar
-                                </button>
+                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white"><i class="fas fa-cart-plus"></i> Comprar</button>
                             </div>
                         </div>
-
                         <div class="col-md-4 mb-4">
                             <div class="product-card">
                                 <img src="{% static 'mouse.jpg' %}" class="product-img" alt="Mouse" onerror="this.src='https://via.placeholder.com/150?text=Mouse'">
-                                <h5 class="fw-bold text-dark">Mouse Gamer</h5>
-                                <p class="text-muted small">Mouse con alta sensibilidad y opción de cambio de DPI al instante.</p>
+                                <h5 class="fw-bold text-dark">Mouse Logitech</h5>
+                                <p class="text-muted small">Alta precisión y DPI ajustable.</p>
                                 <div class="product-price">$40.00</div>
-                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white" onclick="alert('Opción en desarrollo.')">
-                                    <i class="fas fa-cart-plus"></i> Comprar
-                                </button>
+                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white"><i class="fas fa-cart-plus"></i> Comprar</button>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="skillModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold" id="skillTitle">...</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <h6 class="text-muted mb-3">Nivel de Dominio</h6>
+                    <div class="progress mb-4" style="height: 25px; border-radius: 15px; background-color: #e9ecef;">
+                        <div id="skillBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%">0%</div>
+                    </div>
+                    <h6 class="text-muted mb-2">Contexto de Experiencia</h6>
+                    <p id="skillDesc" class="lead text-dark" style="font-size: 1.1rem;">...</p>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-            // NAVEGACIÓN
+            // Navegación
             window.mostrarSeccion = function(idSeccion, elementoBtn) {
                 document.querySelectorAll('section').forEach(sec => sec.classList.remove('active-section'));
                 document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
@@ -389,7 +382,7 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             };
 
-            // MODALES
+            // Modales
             const certModal = document.getElementById('certificadoModal');
             if (certModal) {
                 certModal.addEventListener('show.bs.modal', function (event) {
@@ -421,12 +414,13 @@
                 });
             }
 
-            // PDF
+            // --- LÓGICA DE PDF SEGURA ---
             window.generarPDF = function() {
                 const element = document.getElementById('body-cv');
                 const btn = document.querySelector('.btn-pdf');
                 if(!btn) return; 
                 
+                // 1. Guardar estado original
                 const originalText = btn.innerHTML;
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
                 document.body.classList.add('generating-pdf');
@@ -439,8 +433,26 @@
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
 
+                // 2. TEMPORIZADOR DE SEGURIDAD (5 Segundos)
+                // Si el PDF no se genera en 5 seg, abortamos para no congelar la pantalla.
+                const safetyTimer = setTimeout(() => {
+                    document.body.classList.remove('generating-pdf');
+                    btn.innerHTML = originalText;
+                    alert("El PDF está tardando demasiado por las imágenes. Se canceló para no bloquear tu pantalla. Intenta de nuevo.");
+                }, 5000);
+
+                // 3. Generar PDF
+                // Retrasamos un poco para asegurar que los estilos de 'generating-pdf' se apliquen
                 setTimeout(() => {
-                    html2pdf().set(opt).from(element).save().then(() => {
+                    html2pdf().set(opt).from(element).save()
+                    .then(() => {
+                        clearTimeout(safetyTimer); // ¡Éxito! Cancelamos el temporizador de error
+                        document.body.classList.remove('generating-pdf');
+                        btn.innerHTML = originalText;
+                    })
+                    .catch((err) => {
+                        clearTimeout(safetyTimer); // Error capturado, cancelamos temporizador
+                        console.error("Error PDF:", err);
                         document.body.classList.remove('generating-pdf');
                         btn.innerHTML = originalText;
                     });
