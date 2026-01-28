@@ -329,24 +329,37 @@
                 </div>
                 <div class="modal-body bg-light p-4">
                     <div class="row">
-                        {% for prod in productos %}
+                        
                         <div class="col-md-4 mb-4">
                             <div class="product-card">
-                                {% if prod.imagen %}
-                                    <img src="{{ prod.imagen.url }}" class="product-img" alt="{{ prod.nombre }}" 
-                                         onerror="this.src='{% static 'ventilador.jpg' %}'">
-                                {% else %}
-                                    <img src="{% static 'ventilador.jpg' %}" class="product-img" alt="Sin foto">
-                                {% endif %}
-                                <h5 class="fw-bold text-dark">{{ prod.nombre }}</h5>
-                                <p class="text-muted small">{{ prod.descripcion|truncatechars:50 }}</p>
-                                <div class="product-price">${{ prod.precio }}</div>
+                                <img src="{% static 'ventilador.jpg' %}" class="product-img" alt="Ventilador Gamer" onerror="this.src='https://via.placeholder.com/150'">
+                                <h5 class="fw-bold text-dark">Ventilador Gamer</h5>
+                                <p class="text-muted small">Refrigeración líquida para sesiones intensas.</p>
+                                <div class="product-price">$30.00</div>
                                 <button class="btn btn-warning w-100 fw-bold rounded-pill text-white"><i class="fas fa-cart-plus"></i> Comprar</button>
                             </div>
                         </div>
-                        {% empty %}
-                        <div class="col-12 text-center py-5"><h4 class="text-muted">El garage está vacío. Agrégale productos en Django Admin.</h4></div>
-                        {% endfor %}
+
+                        <div class="col-md-4 mb-4">
+                            <div class="product-card">
+                                <img src="{% static 'laptopgamer.jpg' %}" class="product-img" alt="Laptop MSI" onerror="this.src='https://via.placeholder.com/150'">
+                                <h5 class="fw-bold text-dark">Laptop MSI</h5>
+                                <p class="text-muted small">Potencia extrema para ingeniería y juegos.</p>
+                                <div class="product-price">$1100.00</div>
+                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white"><i class="fas fa-cart-plus"></i> Comprar</button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 mb-4">
+                            <div class="product-card">
+                                <img src="{% static 'mousegamer.jpg' %}" class="product-img" alt="Mouse Logitech" onerror="this.src='https://via.placeholder.com/150'">
+                                <h5 class="fw-bold text-dark">Mouse Logitech</h5>
+                                <p class="text-muted small">Alta precisión y DPI ajustable.</p>
+                                <div class="product-price">$40.00</div>
+                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white"><i class="fas fa-cart-plus"></i> Comprar</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
