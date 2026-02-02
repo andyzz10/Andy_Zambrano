@@ -100,3 +100,4 @@ CLOUDINARY_STORAGE = {
 
 # Configuración para que Django guarde los archivos ahí automáticamente
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
