@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,7 +13,7 @@
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
 
     <style>
-        /* --- FONDO AURORA BOREAL (Igual que el CV para consistencia) --- */
+        /* --- FONDO AURORA BOREAL --- */
         body {
             margin: 0;
             font-family: 'Open Sans', sans-serif;
@@ -71,7 +72,6 @@
             text-transform: uppercase;
             letter-spacing: 5px;
             margin-bottom: 10px;
-            /* Efecto de texto con degradado */
             background: linear-gradient(to right, #fff, #00f260, #0575e6, #fff);
             background-size: 300%;
             -webkit-background-clip: text;
@@ -83,7 +83,7 @@
         .subtitle {
             font-size: 1.5rem;
             color: #a8c0ff;
-            height: 30px; /* Espacio reservado para el typing */
+            height: 30px;
             font-weight: 600;
         }
 
@@ -116,7 +116,6 @@
             transition: 0.5s;
         }
         
-        /* Efecto Neón al pasar el mouse */
         .profile-card:hover {
             border-color: rgba(0, 242, 96, 0.5);
             box-shadow: 0 0 30px rgba(0, 242, 96, 0.3);
@@ -135,12 +134,20 @@
             font-size: 3.5rem;
             color: white;
             border: 5px solid rgba(255,255,255,0.1);
-            transform: translateZ(30px); /* Efecto 3D: Saca la foto hacia afuera */
+            transform: translateZ(30px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            overflow: hidden; /* Importante para que la foto no se salga del círculo */
+        }
+
+        /* Estilo para que la foto real llene el círculo */
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .info-box {
-            transform: translateZ(20px); /* Efecto 3D: Saca el texto */
+            transform: translateZ(20px);
         }
 
         .name {
@@ -160,7 +167,6 @@
             display: block;
         }
 
-        /* Botón dentro de la tarjeta */
         .btn-view {
             display: inline-block;
             padding: 10px 30px;
@@ -169,7 +175,7 @@
             text-decoration: none;
             border-radius: 30px;
             font-weight: bold;
-            transform: translateZ(40px); /* Botón más salido que todo */
+            transform: translateZ(40px);
             transition: 0.3s;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
@@ -179,7 +185,6 @@
             box-shadow: 0 0 20px #00f260;
         }
 
-        /* Mensaje de error si no hay perfiles */
         .empty-msg {
             background: rgba(255,0,0,0.1);
             border: 1px solid red;
@@ -207,7 +212,11 @@
             <div class="profile-card" data-tilt data-tilt-glare data-tilt-max-glare="0.3" data-tilt-speed="400" onclick="location.href='{% url 'cv_view' p.id %}'">
                 
                 <div class="img-box">
-                    <i class="fas fa-user-astronaut"></i>
+                    {% if p.foto_portada %}
+                        <img src="{{ p.foto_portada.url }}" alt="{{ p.nombres }}">
+                    {% else %}
+                        <i class="fas fa-user-astronaut"></i>
+                    {% endif %}
                 </div>
                 
                 <div class="info-box">
@@ -227,7 +236,6 @@
     </div>
 
     <script>
-        // Efecto de escritura automática
         var typed = new Typed('#typed-subtitle', {
             strings: ['Selecciona tu Profesional', 'Explora el Talento', 'Tecnología y Diseño'],
             typeSpeed: 50,
@@ -236,7 +244,6 @@
             showCursor: false
         });
 
-        // Configuración extra para las tarjetas 3D (Opcional, ya funciona con los data- attributes)
         VanillaTilt.init(document.querySelectorAll(".profile-card"), {
             max: 15,
             speed: 400,

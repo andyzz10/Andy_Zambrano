@@ -27,7 +27,13 @@ class DatosPersonales(models.Model):
     telefonofijo = models.CharField(max_length=15, blank=True)
     direcciondomiciliaria = models.CharField(max_length=100)
     sitioweb = models.URLField(blank=True)
-    archivo_cv_pdf = models.FileField(upload_to='cvs/', null=True, blank=True)
+    foto_portada = models.ImageField(
+        upload_to='portadas/', 
+        verbose_name="Foto de Portada", 
+        blank=True, 
+        null=True,
+        help_text="Sube una foto cuadrada para la tarjeta de inicioo."
+    )
 
     def __str__(self):
         return f"{self.nombres} {self.apellidos}"

@@ -138,7 +138,12 @@
 
     <nav class="sidebar">
         <div class="profile-photo-container">
-            <img src="{% static 'perfil_andy.jpeg' %}" alt="Foto" class="profile-photo" onerror="this.src='https://via.placeholder.com/150'">
+            {% if perfil.foto_portada %}
+                <img src="{{ perfil.foto_portada.url }}" alt="{{ perfil.nombres }}" class="profile-photo" style="object-fit: cover;">
+            {% else %}
+                <img src="{% static 'perfil_andy.jpeg' %}" alt="Foto" class="profile-photo" onerror="this.src='https://via.placeholder.com/150'">
+            {% endif %}
+        </div>
         </div>
         <div class="profile-name">{{ perfil.nombres }} {{ perfil.apellidos }}</div>
         <div class="profile-title">Estudiante de TI</div>
