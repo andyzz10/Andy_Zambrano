@@ -21,7 +21,9 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    'cloudinary_storage',
     "django.contrib.staticfiles",
+    'cloudinary',
     
 ]
 
@@ -88,3 +90,13 @@ LOGIN_URL = "/signin"
 # Configuración de archivos multimedia (Fotos y PDFs)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dfus3z6ih',
+    'API_KEY': '399978373383323',
+    'API_SECRET': 'zIk4TP4bLbM9xTo3CkF8rk1TSOg',
+}
+
+# Configuración para que Django guarde los archivos ahí automáticamente
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
