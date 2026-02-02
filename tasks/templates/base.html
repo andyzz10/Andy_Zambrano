@@ -136,7 +136,7 @@
             border: 5px solid rgba(255,255,255,0.1);
             transform: translateZ(30px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            overflow: hidden; /* Importante para que la foto no se salga del círculo */
+            overflow: hidden; 
         }
 
         /* Estilo para que la foto real llene el círculo */
@@ -212,13 +212,12 @@
             <div class="profile-card" data-tilt data-tilt-glare data-tilt-max-glare="0.3" data-tilt-speed="400" onclick="location.href='{% url 'cv_view' p.id %}'">
                 
                 <div class="img-box">
-                    {% load static %}
-
-                        <img src="{% static 'img/perfil_andy.jpeg' %}" alt="Foto de Andy">
+                    {% if p.foto %}
+                        <img src="{{ p.foto.url }}" alt="{{ p.nombres }}">
                     {% else %}
-                        <i class="fas fa-user-astronaut"></i>
+                        
                     {% endif %}
-                </div>git
+                </div>
                 
                 <div class="info-box">
                     <div class="name">{{ p.nombres }} {{ p.apellidos }}</div>
