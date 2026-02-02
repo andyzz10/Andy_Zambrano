@@ -23,7 +23,7 @@
         body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--secondary-color); overflow-x: hidden; margin: 0; }
 
         /* --- BARRA LATERAL --- */
-        .sidebar { width: var(--sidebar-width); position: fixed; top: 0; bottom: 0; left: 0; background: white; border-right: 1px solid #e2e8f0; padding: 30px 20px; z-index: 1000; text-align: center; box-shadow: 2px 0 10px rgba(0,0,0,0.03); overflow-y: auto; }
+        .sidebar { width: var(--sidebar-width); position: fixed; top: 0; bottom: 0; left: 0; background: white; border-right: 1px solid #e2e8f0; padding: 30px 20px; z-index: 1000; text-align: center; box-shadow: 2px 0 10px rgba(0,0,0,0.03); overflow-y: auto; display: flex; flex-direction: column; }
         .profile-photo-container { width: 150px; height: 150px; margin: 0 auto 20px; border-radius: 50%; overflow: hidden; border: 4px solid white; box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2); }
         .profile-photo { width: 100%; height: 100%; object-fit: cover; }
         .profile-name { font-size: 1.2rem; font-weight: 700; color: var(--secondary-color); margin-bottom: 5px; }
@@ -69,61 +69,50 @@
         .top-buttons { position: fixed; top: 30px; right: 30px; z-index: 1001; display: flex; gap: 15px; }
         .btn-float { background: white; color: var(--primary-color); border: 1px solid var(--primary-color); border-radius: 50px; padding: 10px 25px; font-weight: 600; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transition: 0.3s; display: flex; align-items: center; gap: 8px; }
         .btn-float:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
-        .btn-pdf { background: var(--primary-color); color: white; border: none; }
+        .btn-pdf { background: var(--primary-color); color: white; border: none; cursor: pointer; }
         .btn-pdf:hover { background: #1d4ed8; color: white; }
         .btn-garage { background: var(--garage-color); color: white; border: none; border-radius: 50px; padding: 10px 25px; font-weight: 700; display: flex; align-items: center; gap: 10px; cursor: pointer; box-shadow: 0 4px 15px rgba(255, 159, 67, 0.4); transition: 0.3s; text-decoration: none;}
+
+        /* Botón nuevo en Sidebar */
+        .btn-config-menu {
+            margin-top: auto; /* Empujar al fondo */
+            background: #fff; border: 1px solid #ddd; width: 100%; border-radius: 10px; padding: 10px;
+            color: #666; font-weight: 600; transition: 0.3s; text-align: left;
+        }
+        .btn-config-menu:hover { background: #f8f9fa; color: var(--primary-color); border-color: var(--primary-color); }
 
         /* --- GARAGE --- */
         .product-card { border: 1px solid #eee; border-radius: 15px; padding: 15px; text-align: center; transition: 0.3s; height: 100%; background: #fff; }
         .product-img { height: 120px; object-fit: contain; margin-bottom: 15px; }
         .product-price { color: var(--garage-color); font-weight: 800; font-size: 1.2rem; margin: 10px 0; }
         
-        @media (max-width: 991px) { .sidebar { width: 100%; position: relative; height: auto; } .main-content { margin-left: 0; padding: 20px; } .top-buttons { position: relative; top: 0; right: 0; margin-bottom: 20px; justify-content: center; flex-wrap: wrap;} }
+        @media (max-width: 991px) { .sidebar { width: 100%; position: relative; height: auto; display: block; } .main-content { margin-left: 0; padding: 20px; } .top-buttons { position: relative; top: 0; right: 0; margin-bottom: 20px; justify-content: center; flex-wrap: wrap;} }
         
         /* ========================================= */
         /* CSS LIMPIO Y CORREGIDO PARA PDF          */
         /* ========================================= */
-        .generating-pdf * {
-            animation: none !important; transition: none !important; opacity: 1 !important; 
-            text-shadow: none !important; box-shadow: none !important;
-        }
+        .generating-pdf * { animation: none !important; transition: none !important; opacity: 1 !important; text-shadow: none !important; box-shadow: none !important; }
         .generating-pdf body { background-color: #ffffff !important; -webkit-print-color-adjust: exact; }
-        
         .generating-pdf .sidebar { position: absolute; left: 0; top: 0; height: 100%; background: #f8f9fa !important; border-right: 1px solid #ccc !important; }
         .generating-pdf .main-content { margin-left: 280px !important; padding: 20px !important; background: white !important; }
-        
-        .generating-pdf .top-buttons, 
-        .generating-pdf button.tech-badge,
-        .generating-pdf .btn-ver-cert,     
-        .generating-pdf .btn-garage { display: none !important; }
-
-        .generating-pdf .pdf-visible-content { 
-            display: block !important; 
-            margin-top: 10px; padding: 10px;
-            border: 1px solid #eee; background: #fafafa; border-radius: 8px;
-        }
-
-        .generating-pdf .cert-img-pdf {
-            width: 100%; max-width: 300px; 
-            height: auto; display: block; margin: 10px auto;
-            border: 5px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2) !important;
-        }
-
-        .generating-pdf .skill-item-pdf {
-            margin-bottom: 15px; border-left: 4px solid var(--primary-color); padding-left: 15px;
-        }
+        .generating-pdf .top-buttons, .generating-pdf button.tech-badge, .generating-pdf .btn-ver-cert, .generating-pdf .btn-garage, .generating-pdf .btn-config-menu { display: none !important; }
+        .generating-pdf .pdf-visible-content { display: block !important; margin-top: 10px; padding: 10px; border: 1px solid #eee; background: #fafafa; border-radius: 8px; }
+        .generating-pdf .cert-img-pdf { width: 100%; max-width: 300px; height: auto; display: block; margin: 10px auto; border: 5px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2) !important; }
+        .generating-pdf .skill-item-pdf { margin-bottom: 15px; border-left: 4px solid var(--primary-color); padding-left: 15px; }
         .generating-pdf .skill-title-pdf { font-weight: bold; color: var(--primary-color); font-size: 1.1rem; }
         .generating-pdf .skill-desc-pdf { color: #333; font-size: 0.95rem; text-align: justify; }
-
         .generating-pdf h2 { color: #ec4899 !important; }
         .generating-pdf h5, .generating-pdf .fw-bold { color: #000 !important; }
         .generating-pdf p, .generating-pdf small { color: #222 !important; }
+        
+        /* Clase para ocultar elementos vía JS */
+        .d-none-custom { display: none !important; }
     </style>
 </head>
 <body id="body-cv">
 
     <div class="top-buttons">
-        <button class="btn-garage" data-bs-toggle="modal" data-bs-target="#garageModal">
+        <button id="btnGarageTop" class="btn-garage" data-bs-toggle="modal" data-bs-target="#garageModal">
             <i class="fas fa-shopping-cart"></i> Garage
         </button>
         <a href="/" class="btn-float"><i class="fas fa-home"></i> Inicio</a>
@@ -133,7 +122,10 @@
         {% else %}
             <a href="/signin/" class="btn-float"><i class="fas fa-user"></i> Login</a>
         {% endif %}
-        <a href="#" onclick="generarPDF()" class="btn-float btn-pdf"><i class="fas fa-file-pdf"></i> PDF</a>
+        
+        <button class="btn-float btn-pdf" data-bs-toggle="modal" data-bs-target="#pdfConfigModal">
+            <i class="fas fa-file-pdf"></i> PDF
+        </button>
     </div>
 
     <nav class="sidebar">
@@ -144,18 +136,32 @@
                 <img src="{% static 'perfil_andy.jpeg' %}" alt="Foto" class="profile-photo" onerror="this.src='https://via.placeholder.com/150'">
             {% endif %}
         </div>
-        </div>
         <div class="profile-name">{{ perfil.nombres }} {{ perfil.apellidos }}</div>
         <div class="profile-title">Estudiante de TI</div>
         <hr class="my-4" style="opacity: 0.1;">
         <div class="nav flex-column nav-pills">
             <a class="nav-link active" onclick="mostrarSeccion('inicio', this)"><i class="fas fa-user"></i> Inicio</a>
-            <a class="nav-link" onclick="mostrarSeccion('recursos', this)"><i class="fas fa-book-reader"></i> Recursos Académicos</a>
-            <a class="nav-link" onclick="mostrarSeccion('experiencia', this)"><i class="fas fa-briefcase"></i> Experiencia</a>
-            <a class="nav-link" onclick="mostrarSeccion('educacion', this)"><i class="fas fa-graduation-cap"></i> Educación</a>
-            <a class="nav-link" onclick="mostrarSeccion('reconocimientos', this)"><i class="fas fa-award"></i> Reconocimientos</a>
-            <a class="nav-link" onclick="mostrarSeccion('habilidades', this)"><i class="fas fa-star"></i> Habilidades</a>
+            
+            <span id="nav-recursos">
+                <a class="nav-link" onclick="mostrarSeccion('recursos', this)"><i class="fas fa-book-reader"></i> Recursos Académicos</a>
+            </span>
+            <span id="nav-experiencia">
+                <a class="nav-link" onclick="mostrarSeccion('experiencia', this)"><i class="fas fa-briefcase"></i> Experiencia</a>
+            </span>
+            <span id="nav-educacion">
+                <a class="nav-link" onclick="mostrarSeccion('educacion', this)"><i class="fas fa-graduation-cap"></i> Educación</a>
+            </span>
+            <span id="nav-reconocimientos">
+                <a class="nav-link" onclick="mostrarSeccion('reconocimientos', this)"><i class="fas fa-award"></i> Reconocimientos</a>
+            </span>
+            <span id="nav-habilidades">
+                <a class="nav-link" onclick="mostrarSeccion('habilidades', this)"><i class="fas fa-star"></i> Habilidades</a>
+            </span>
         </div>
+
+        <button class="btn-config-menu mt-4" data-bs-toggle="modal" data-bs-target="#configMenuModal">
+            <i class="fas fa-sliders-h"></i> Configurar Menú
+        </button>
     </nav>
 
     <main class="main-content">
@@ -194,9 +200,7 @@
             <div class="info-card">
                 {% for rec in recursos %}
                 <div class="recurso-item">
-                    <span class="recurso-titulo">
-                        <i class="{{ rec.icono }} me-2 text-primary"></i> {{ rec.titulo }}
-                    </span>
+                    <span class="recurso-titulo"><i class="{{ rec.icono }} me-2 text-primary"></i> {{ rec.titulo }}</span>
                     {{ rec.descripcion }}
                 </div>
                 {% empty %}
@@ -242,47 +246,28 @@
         <section id="reconocimientos">
             <div class="section-header"><h2>Cursos y Certificaciones</h2></div>
             <div class="row">
-                
                 <div class="col-md-6 mb-3">
                     <div class="info-card h-100 position-relative">
                         <div class="icon-header text-warning"><i class="fas fa-award"></i> Certificación</div>
                         <h5 class="fw-bold">English Intermediate (B1)</h5>
                         <p class="text-muted">Universidad Laica Eloy Alfaro de Manabí (ULEAM)</p>
-                        
-                        <button class="btn btn-outline-primary btn-sm btn-ver-cert mt-2" 
-                                type="button" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#certificadoModal" 
-                                data-bs-img="{% static 'cert_ingles.png' %}">
+                        <button class="btn btn-outline-primary btn-sm btn-ver-cert mt-2" type="button" data-bs-toggle="modal" data-bs-target="#certificadoModal" data-bs-img="{% static 'cert_ingles.png' %}">
                             <i class="fas fa-eye"></i> Ver Credencial
                         </button>
-                        
-                        <div class="pdf-visible-content">
-                            <img src="{% static 'cert_ingles.png' %}" class="cert-img-pdf" alt="Certificado Inglés">
-                        </div>
+                        <div class="pdf-visible-content"><img src="{% static 'cert_ingles.png' %}" class="cert-img-pdf" alt="Certificado Inglés"></div>
                     </div>
                 </div>
-
                 <div class="col-md-6 mb-3">
                     <div class="info-card h-100 position-relative">
                         <div class="icon-header text-warning"><i class="fas fa-award"></i> Certificación</div>
                         <h5 class="fw-bold">TITULO BACHILLER EN TI</h5>
                         <p class="text-muted">Unidad Educativa Fiscal Manta</p>
-                        
-                        <button class="btn btn-outline-primary btn-sm btn-ver-cert mt-2" 
-                                type="button" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#certificadoModal" 
-                                data-bs-img="{% static 'cert_titulo.png' %}">
+                        <button class="btn btn-outline-primary btn-sm btn-ver-cert mt-2" type="button" data-bs-toggle="modal" data-bs-target="#certificadoModal" data-bs-img="{% static 'cert_titulo.png' %}">
                             <i class="fas fa-eye"></i> Ver Credencial
                         </button>
-                        
-                        <div class="pdf-visible-content">
-                            <img src="{% static 'cert_titulo.png' %}" class="cert-img-pdf" alt="Certificado Título">
-                        </div>
+                        <div class="pdf-visible-content"><img src="{% static 'cert_titulo.png' %}" class="cert-img-pdf" alt="Certificado Título"></div>
                     </div>
                 </div>
-
             </div>
         </section>
 
@@ -290,22 +275,15 @@
             <div class="section-header"><h2>Stack Tecnológico</h2></div>
             <div class="info-card">
                 <div class="icon-header"><i class="fas fa-rocket"></i> Competencias Clave</div>
-                
                 <div class="tech-container">
                     {% for hab in habilidades %}
-                    
-                    <button class="tech-badge border-0" type="button" data-bs-toggle="modal" data-bs-target="#skillModal"
-                            data-bs-nombre="{{ hab.nombre|escape }}"
-                            data-bs-nivel="{{ hab.porcentaje }}"
-                            data-bs-desc="{{ hab.descripcion|default:'Sin descripción.'|escape }}">
+                    <button class="tech-badge border-0" type="button" data-bs-toggle="modal" data-bs-target="#skillModal" data-bs-nombre="{{ hab.nombre|escape }}" data-bs-nivel="{{ hab.porcentaje }}" data-bs-desc="{{ hab.descripcion|default:'Sin descripción.'|escape }}">
                         <i class="fas fa-check-circle"></i> {{ hab.nombre }}
                     </button>
-
                     <div class="pdf-visible-content skill-item-pdf">
                         <div class="skill-title-pdf"><i class="fas fa-check"></i> {{ hab.nombre }} ({{ hab.porcentaje }}%)</div>
                         <div class="skill-desc-pdf">{{ hab.descripcion|default:"Manejo competente." }}</div>
                     </div>
-
                     {% empty %}
                     <p class="text-muted">No hay habilidades registradas.</p>
                     {% endfor %}
@@ -313,6 +291,88 @@
             </div>
         </section>
     </main>
+
+    <div class="modal fade" id="configMenuModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow-lg border-0">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-primary">Configurar Vista Web</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-2">
+                    <p class="text-muted small">Selecciona qué secciones quieres ver en la pantalla:</p>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="checkGarage" checked onchange="toggleWebSection('btnGarageTop', this.checked)">
+                        <label class="form-check-label" for="checkGarage">Ver Garage</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="checkRecursos" checked onchange="toggleWebSection('nav-recursos', this.checked)">
+                        <label class="form-check-label" for="checkRecursos">Ver Recursos</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="checkExp" checked onchange="toggleWebSection('nav-experiencia', this.checked)">
+                        <label class="form-check-label" for="checkExp">Ver Experiencia</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="checkEdu" checked onchange="toggleWebSection('nav-educacion', this.checked)">
+                        <label class="form-check-label" for="checkEdu">Ver Educación</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="checkRec" checked onchange="toggleWebSection('nav-reconocimientos', this.checked)">
+                        <label class="form-check-label" for="checkRec">Ver Reconocimientos</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input" type="checkbox" id="checkHab" checked onchange="toggleWebSection('nav-habilidades', this.checked)">
+                        <label class="form-check-label" for="checkHab">Ver Habilidades</label>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-primary w-100 rounded-pill" data-bs-dismiss="modal">Listo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="pdfConfigModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow-lg border-0">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-danger"><i class="fas fa-file-pdf"></i> Configurar PDF</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-2">
+                    <p class="text-muted small">Elige las secciones para incluir en el PDF:</p>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input pdf-check" type="checkbox" checked data-section="inicio">
+                        <label class="form-check-label">Inicio / Datos</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input pdf-check" type="checkbox" checked data-section="recursos">
+                        <label class="form-check-label">Recursos Académicos</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input pdf-check" type="checkbox" checked data-section="experiencia">
+                        <label class="form-check-label">Experiencia Laboral</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input pdf-check" type="checkbox" checked data-section="educacion">
+                        <label class="form-check-label">Educación</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input pdf-check" type="checkbox" checked data-section="reconocimientos">
+                        <label class="form-check-label">Reconocimientos</label>
+                    </div>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input pdf-check" type="checkbox" checked data-section="habilidades">
+                        <label class="form-check-label">Habilidades</label>
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-danger w-100 rounded-pill" onclick="generarPDFManaged()">Descargar PDF</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" id="certificadoModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -334,31 +394,26 @@
                 </div>
                 <div class="modal-body bg-light p-4">
                     <div class="row">
-                        
                         {% for prod in productos %}
-<div class="col-md-4 mb-4">
-    <div class="product-card">
-        <img src="{% if prod.imagen %}{{ prod.imagen.url }}{% else %}{% static 'ventilador.jpg' %}{% endif %}" 
-             class="product-img" 
-             alt="{{ prod.nombre }}" 
-             onerror="this.src='{% if "aptop" in prod.nombre %}{% static "laptop.jpg" %}{% elif "ouse" in prod.nombre %}{% static "mouse.jpg" %}{% else %}{% static "ventilador.jpg" %}{% endif %}'"
-        
-        <h5 class="fw-bold text-dark">{{ prod.nombre }}</h5>
-        <p class="text-muted small">{{ prod.descripcion|truncatechars:50 }}</p>
-        <div class="product-price">${{ prod.precio }}</div>
-        
-        <button class="btn btn-warning w-100 fw-bold rounded-pill text-white" 
-                onclick="alert('¡{{ prod.nombre|escapejs }} agregado al carrito!')">
-            <i class="fas fa-cart-plus"></i> Comprar
-        </button>
-    </div>
-</div>
-{% empty %}
-<div class="col-12 text-center py-5">
-    <h4 class="text-muted">Este garage está vacío para este perfil.</h4>
-    <p>Agrega productos en el Admin asignándolos a {{ perfil.nombres }}.</p>
-</div>
-{% endfor %}
+                        <div class="col-md-4 mb-4">
+                            <div class="product-card">
+                                <img src="{% if prod.imagen %}{{ prod.imagen.url }}{% else %}{% static 'ventilador.jpg' %}{% endif %}" 
+                                     class="product-img" alt="{{ prod.nombre }}" 
+                                     onerror="this.src='{% if "aptop" in prod.nombre %}{% static "laptop.jpg" %}{% elif "ouse" in prod.nombre %}{% static "mouse.jpg" %}{% else %}{% static "ventilador.jpg" %}{% endif %}'">
+                                <h5 class="fw-bold text-dark">{{ prod.nombre }}</h5>
+                                <p class="text-muted small">{{ prod.descripcion|truncatechars:50 }}</p>
+                                <div class="product-price">${{ prod.precio }}</div>
+                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white" onclick="alert('¡{{ prod.nombre|escapejs }} agregado al carrito!')">
+                                    <i class="fas fa-cart-plus"></i> Comprar
+                                </button>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="col-12 text-center py-5">
+                            <h4 class="text-muted">Este garage está vacío para este perfil.</h4>
+                            <p>Agrega productos en el Admin asignándolos a {{ perfil.nombres }}.</p>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -377,7 +432,6 @@
                     <div class="progress mb-4" style="height: 25px; border-radius: 15px; background-color: #e9ecef;">
                         <div id="skillBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%">0%</div>
                     </div>
-                    <h6 class="text-muted mb-2">Contexto de Experiencia</h6>
                     <p id="skillDesc" class="lead text-dark" style="font-size: 1.1rem;">...</p>
                 </div>
                 <div class="modal-footer border-0 justify-content-center">
@@ -390,19 +444,32 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
-            // Navegación
+            // Función para activar/desactivar elementos de la vista WEB
+            window.toggleWebSection = function(idElemento, isChecked) {
+                const el = document.getElementById(idElemento);
+                if (el) {
+                    if (isChecked) {
+                        el.classList.remove('d-none-custom');
+                        // Si es un botón de navegación, mostrar la sección también
+                        if(idElemento.startsWith('nav-')) {
+                            // Opcional: mostrar la sección ligada si se desea lógica compleja
+                        }
+                    } else {
+                        el.classList.add('d-none-custom');
+                    }
+                }
+            };
+
             window.mostrarSeccion = function(idSeccion, elementoBtn) {
                 document.querySelectorAll('section').forEach(sec => sec.classList.remove('active-section'));
                 document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
-                
                 const seccion = document.getElementById(idSeccion);
                 if(seccion) seccion.classList.add('active-section');
                 if(elementoBtn) elementoBtn.classList.add('active');
-                
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             };
 
-            // Modales
+            // Certificados & Skills Modals
             const certModal = document.getElementById('certificadoModal');
             if (certModal) {
                 certModal.addEventListener('show.bs.modal', function (event) {
@@ -412,7 +479,6 @@
                     if(modalImg) modalImg.src = imagenSrc;
                 });
             }
-
             const skillModal = document.getElementById('skillModal');
             if (skillModal) {
                 skillModal.addEventListener('show.bs.modal', function (event) {
@@ -420,59 +486,95 @@
                     const nombre = button.getAttribute('data-bs-nombre');
                     const nivel = button.getAttribute('data-bs-nivel');
                     const desc = button.getAttribute('data-bs-desc');
-
                     skillModal.querySelector('#skillTitle').textContent = nombre;
                     skillModal.querySelector('#skillDesc').textContent = desc;
                     const bar = skillModal.querySelector('#skillBar');
                     bar.style.width = nivel + '%';
                     bar.textContent = nivel + '%';
-                    
-                    bar.className = 'progress-bar progress-bar-striped progress-bar-animated';
-                    if(nivel >= 80) bar.classList.add('bg-success');
-                    else if(nivel >= 50) bar.classList.add('bg-primary');
-                    else bar.classList.add('bg-warning');
                 });
             }
 
-            // PDF
-            window.generarPDF = function() {
+            // --- NUEVA LÓGICA DE PDF CON SELECTOR ---
+            window.generarPDFManaged = function() {
+                // 1. Cerrar el modal de configuración de PDF
+                const pdfModalEl = document.getElementById('pdfConfigModal');
+                const pdfModal = bootstrap.Modal.getInstance(pdfModalEl);
+                if(pdfModal) pdfModal.hide();
+
                 const element = document.getElementById('body-cv');
-                const btn = document.querySelector('.btn-pdf');
-                if(!btn) return; 
+                const btn = document.querySelector('.btn-pdf'); // Botón original
+                const originalText = btn ? btn.innerHTML : '';
                 
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando...';
+                if(btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando...';
                 document.body.classList.add('generating-pdf');
+
+                // 2. Ocultar secciones NO seleccionadas
+                const checks = document.querySelectorAll('.pdf-check');
+                checks.forEach(chk => {
+                    const secId = chk.getAttribute('data-section');
+                    const section = document.getElementById(secId);
+                    if (!chk.checked && section) {
+                        section.classList.add('d-none-custom'); // Usamos la misma clase de ocultar
+                    } else if (section) {
+                        // Asegurar que las que SÍ queremos se muestren (por si estaban ocultas en la vista web)
+                        section.classList.remove('d-none-custom');
+                        section.style.display = 'block'; // Forzar display block para html2pdf
+                    }
+                });
 
                 const opt = {
                     margin: 0,
-                    filename: 'CV_Andy_Zambrano.pdf',
+                    filename: 'CV_{{ perfil.nombres }}.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
 
-                const safetyTimer = setTimeout(() => {
-                    document.body.classList.remove('generating-pdf');
-                    btn.innerHTML = originalText;
-                    alert("El PDF se tardó un poco, pero intentamos generarlo con las imágenes de respaldo.");
-                }, 5000);
-
+                // Esperar un poco para que el DOM se actualice
                 setTimeout(() => {
                     html2pdf().set(opt).from(element).save()
                     .then(() => {
-                        clearTimeout(safetyTimer);
-                        document.body.classList.remove('generating-pdf');
-                        btn.innerHTML = originalText;
+                        limpiarDespuesPDF(btn, originalText);
                     })
                     .catch((err) => {
-                        clearTimeout(safetyTimer);
                         console.error("Error PDF:", err);
-                        document.body.classList.remove('generating-pdf');
-                        btn.innerHTML = originalText;
+                        limpiarDespuesPDF(btn, originalText);
                     });
-                }, 1000); 
+                }, 800);
             };
+
+            function limpiarDespuesPDF(btn, originalText) {
+                document.body.classList.remove('generating-pdf');
+                if(btn) btn.innerHTML = originalText;
+                
+                // Restaurar visibilidad según el menú de configuración WEB (no el de PDF)
+                const checksWeb = ['checkGarage', 'checkRecursos', 'checkExp', 'checkEdu', 'checkRec', 'checkHab'];
+                const mapIds = {
+                    'checkGarage': 'btnGarageTop',
+                    'checkRecursos': 'nav-recursos',
+                    'checkExp': 'nav-experiencia',
+                    'checkEdu': 'nav-educacion',
+                    'checkRec': 'nav-reconocimientos',
+                    'checkHab': 'nav-habilidades'
+                };
+
+                // Revertir a como estaba la vista web
+                checksWeb.forEach(id => {
+                    const chk = document.getElementById(id);
+                    const targetId = mapIds[id];
+                    if (chk && targetId) {
+                        toggleWebSection(targetId, chk.checked);
+                    }
+                });
+                
+                // Asegurar que las secciones vuelvan a su estado normal de navegación (solo 1 activa)
+                // Esto es un reset rápido para evitar que todo quede abierto
+                const activeLink = document.querySelector('.nav-link.active');
+                if(activeLink) {
+                    const targetId = activeLink.getAttribute('onclick').match(/'([^']+)'/)[1];
+                    mostrarSeccion(targetId, activeLink);
+                }
+            }
         });
     </script>
 </body>

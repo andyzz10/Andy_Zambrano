@@ -27,6 +27,7 @@ class DatosPersonales(models.Model):
     telefonofijo = models.CharField(max_length=15, blank=True)
     direcciondomiciliaria = models.CharField(max_length=100)
     sitioweb = models.URLField(blank=True)
+    mostrar_botones = models.BooleanField(default=True, verbose_name="Mostrar Botones Superiores (Garage, PDF, etc.)")
     foto_portada = models.ImageField(
         upload_to='portadas/', 
         verbose_name="Foto de Portada", 
