@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.core.exceptions import ValidationError
 # --- ESTO NO LO TOQUES (Es tu tarea actual) ---
 class Task(models.Model):
     title = models.CharField(max_length=100)
@@ -39,9 +39,19 @@ class ExperienciaLaboral(models.Model):
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField(null=True, blank=True)
     logros = models.TextField()
+    
 
     def __str__(self):
         return f"{self.cargodesempenado} en {self.nombrempresa}"
+    
+    def clean(self):
+        # Validar que fecha_fin no sea menor a fecha_inicio
+        if self.fecha_fin and self.fecha_inicio and self.fecha_fin < self.fecha_inicio:
+            raise ValidationError("⛔ Error Lógico: La fecha de finalización no puede ser antes de la fecha de inicio.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean() # Esto obliga a ejecutar la validación antes de guardar
+        super().save(*args, **kwargs)
 
 class Habilidad(models.Model):
     perfil = models.ForeignKey(DatosPersonales, on_delete=models.CASCADE, related_name='habilidades')
@@ -68,11 +78,22 @@ class Educacion(models.Model):
     perfil = models.ForeignKey(DatosPersonales, on_delete=models.CASCADE)
     titulo = models.CharField(max_length=100, verbose_name="Título Obtenido")
     institucion = models.CharField(max_length=100, verbose_name="Institución Educativa")
-    fecha_inicio = models.DateField(null=True, blank=True, verbose_name="Fecha Inicio")
-    fecha_fin = models.DateField(null=True, blank=True, verbose_name="Fecha Fin (Dejar vacío si cursas actualmente)")
     
+    # ... tus campos actuales ...
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField(null=True, blank=True)
     def __str__(self):
         return self.titulo
+    
+    # AGREGA ESTO AL FINAL DE LA CLASE:
+    def clean(self):
+        # Validar que fecha_fin no sea menor a fecha_inicio
+        if self.fecha_fin and self.fecha_inicio and self.fecha_fin < self.fecha_inicio:
+            raise ValidationError("⛔ Error Lógico: La fecha de finalización no puede ser antes de la fecha de inicio.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean() # Esto obliga a ejecutar la validación antes de guardar
+        super().save(*args, **kwargs)
     # --- AL FINAL DE models.py ---
 
 class ProductoGarage(models.Model):
