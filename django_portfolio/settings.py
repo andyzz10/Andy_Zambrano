@@ -92,6 +92,11 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dfus3z6ih',
     'API_KEY': '399978373383323',
