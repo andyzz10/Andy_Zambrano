@@ -212,8 +212,9 @@
             <div class="profile-card" data-tilt data-tilt-glare data-tilt-max-glare="0.3" data-tilt-speed="400" onclick="location.href='{% url 'cv_view' p.id %}'">
                 
                 <div class="img-box">
-                    {% if p.foto_portada %}
-                        <img src="{{ p.foto_portada.url }}" alt="{{ p.nombres }}">
+                    {% load static %}
+
+                        <img src="{% static 'img/perfil_andy.jpg' %}" alt="Foto de Andy">
                     {% else %}
                         <i class="fas fa-user-astronaut"></i>
                     {% endif %}
