@@ -21,15 +21,16 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    # Cloudinary debe ir ANTES de staticfiles si quieres que maneje estáticos (opcional), 
+    # pero para media está bien aquí.
     'cloudinary_storage',
     "django.contrib.staticfiles",
     'cloudinary',
-    
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware", # OBLIGATORIO PARA QUE NO SE VEA FEO
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -58,7 +59,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "django_portfolio.wsgi.application"
 
-# Manteniendo SQLite para desarrollo local según tu preferencia
 DATABASES = {
     'default': dj_database_url.config(
         default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
@@ -78,31 +78,21 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
+LOGIN_URL = "/signin"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_URL = "/signin"
+# --- CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS (CSS/JS) ---
+# Esto arregla que se vea "feo"
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# Configuración de archivos multimedia (Fotos y PDFs)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
+# --- CONFIGURACIÓN DE CLOUDINARY (FOTOS) ---
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dfus3z6ih',
     'API_KEY': '399978373383323',
-    'API_SECRET': 'zIk4TP4bLbM9xTo3CkF8rk1TSOg',
+    'API_SECRET': 'zlk4TP4bLbM9xTo3CkF8rk1TSOg', # CORREGIDO (era zIk4, es zlk4)
 }
 
-# Configuración para que Django guarde los archivos ahí automáticamente
+MEDIA_URL = '/media/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
