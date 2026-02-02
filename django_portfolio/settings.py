@@ -6,6 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 
+# Configuración estándar
 DEBUG = "RENDER" not in os.environ
 
 ALLOWED_HOSTS = ["*"]
@@ -21,16 +22,11 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    # Cloudinary debe ir ANTES de staticfiles si quieres que maneje estáticos (opcional), 
-    # pero para media está bien aquí.
-    'cloudinary_storage',
     "django.contrib.staticfiles",
-    'cloudinary',
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware", # OBLIGATORIO PARA QUE NO SE VEA FEO
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -79,20 +75,14 @@ USE_I18N = True
 USE_TZ = True
 
 LOGIN_URL = "/signin"
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# --- CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS (CSS/JS) ---
-# Esto arregla que se vea "feo"
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# Eliminamos la configuración compleja de staticfiles para volver a lo básico
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# --- CONFIGURACIÓN DE CLOUDINARY (FOTOS) ---
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dfus3z6ih',
-    'API_KEY': '399978373383323',
-    'API_SECRET': 'zlk4TP4bLbM9xTo3CkF8rk1TSOg', # CORREGIDO (era zIk4, es zlk4)
-}
-
+# Configuración básica de medios (Local)
 MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
