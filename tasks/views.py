@@ -27,7 +27,7 @@ def cv_view(request, profile_id):
     habilidades = Habilidad.objects.filter(perfil=perfil)
     reconocimientos = Reconocimiento.objects.filter(perfil=perfil)
     educacion = Educacion.objects.filter(perfil=perfil).order_by('-fecha_inicio')
-    productos = ProductoGarage.objects.all()
+    productos = ProductoGarage.objects.filter(perfil=perfil)
     recursos = RecursoAcademico.objects.filter(perfil=perfil)
     
 

@@ -103,6 +103,7 @@ class Educacion(models.Model):
     # --- AL FINAL DE models.py ---
 
 class ProductoGarage(models.Model):
+    perfil = models.ForeignKey(DatosPersonales, on_delete=models.CASCADE, related_name='productos', null=True, blank=True)
     nombre = models.CharField(max_length=100, verbose_name="Nombre del Producto")
     descripcion = models.TextField(verbose_name="Descripción", blank=True)
     precio = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Precio ($)")
