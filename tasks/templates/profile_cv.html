@@ -14,14 +14,21 @@
 
     <style>
         :root {
-        /* --- ESTILOS MODO OSCURO CORREGIDOS --- */
+            --primary-color: #2563eb; 
+            --secondary-color: #1e293b;
+            --bg-color: #f8fafc;
+            --sidebar-width: 280px;
+            --accent-color: #00f260;
+            --garage-color: #ff9f43; 
+        }
+
+        /* --- ESTILOS MODO OSCURO --- */
         body.dark-mode {
             --bg-color: #121212;
             --secondary-color: #e0e0e0;
-            color: #e0e0e0 !important; /* Fuerza color de texto base claro */
+            color: #e0e0e0 !important;
         }
 
-        /* Fondos oscuros para tarjetas, barra lateral y modales */
         body.dark-mode .sidebar,
         body.dark-mode .info-card,
         body.dark-mode .product-card,
@@ -34,35 +41,51 @@
             box-shadow: none !important;
         }
 
-        /* CORRECCIÓN CLAVE: Forzar textos de Bootstrap a ser claros */
         body.dark-mode .text-dark,
         body.dark-mode .text-muted,
         body.dark-mode .text-secondary,
-        body.dark-mode .fw-bold.text-dark, /* Para títulos h5 dentro de tarjetas */
+        body.dark-mode .fw-bold.text-dark,
         body.dark-mode small.text-muted {
-            color: #b0b0b0 !important; /* Un gris claro legible */
+            color: #b0b0b0 !important;
         }
 
-        /* Forzar los fondos claros de Bootstrap a ser oscuros */
         body.dark-mode .bg-light {
             background-color: #2d2d2d !important;
             color: #e0e0e0 !important;
         }
 
-        /* Ajustes de navegación y enlaces */
         body.dark-mode .nav-pills .nav-link:not(.active) { color: #a0a0a0 !important; }
         body.dark-mode .nav-pills .nav-link:not(.active):hover { background-color: #333 !important; color: var(--primary-color) !important; }
         
-        /* Títulos de sección en rosa más brillante */
         body.dark-mode .section-header h2 { color: #f687b3 !important; border-bottom-color: #444 !important; }
         body.dark-mode .border-bottom, body.dark-mode hr { border-color: #444 !important; opacity: 1; }
-            --primary-color: #2563eb; 
-            --secondary-color: #1e293b;
-            --bg-color: #f8fafc;
-            --sidebar-width: 280px;
-            --accent-color: #00f260;
-            --garage-color: #ff9f43; 
+
+        /* --- ESTILOS ESPECÍFICOS PARA PDF --- */
+        .pdf-page-break {
+            page-break-before: always !important;
+            break-before: page !important;
+            margin-top: 0px !important;
+            padding-top: 20px !important;
         }
+
+        /* IMAGENES EN PDF: Truco para que carguen pero no se vean en la web */
+        .pdf-cert-container {
+            display: none; /* Oculto en web normal */
+        }
+
+        /* --- CLASE MAESTRA GENERATING-PDF (Mantenida por si acaso) --- */
+        .generating-pdf body { background-color: #ffffff !important; color: #000000 !important; }
+        .generating-pdf * { color: #000000 !important; text-shadow: none !important; }
+        .generating-pdf section { display: block !important; margin-bottom: 0px !important; padding-bottom: 0px !important; opacity: 1 !important; visibility: visible !important; }
+        .generating-pdf .section-header { margin-top: 20px !important; border-bottom: 2px solid #000 !important; }
+        .generating-pdf h2 { color: #2563eb !important; }
+        .generating-pdf .info-card, .generating-pdf .sidebar { background-color: #ffffff !important; color: #000000 !important; box-shadow: none !important; border: none !important; }
+        
+        .generating-pdf .pdf-cert-container { height: auto !important; overflow: visible !important; visibility: visible !important; display: block !important; margin-top: 15px; margin-bottom: 20px; text-align: center; page-break-inside: avoid; }
+        .generating-pdf .pdf-cert-img { width: 100% !important; max-width: 600px; height: auto; border: 1px solid #333; border-radius: 5px; display: block; margin: 0 auto; }
+        .generating-pdf .d-none-pdf, .generating-pdf .top-buttons, .generating-pdf .btn-config-menu { display: none !important; }
+        
+        .d-none-web { display: none !important; }
 
         body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--secondary-color); overflow-x: hidden; margin: 0; }
 
@@ -115,18 +138,95 @@
         .bg-regular { background: #ffc107; color: black; }
         
         @media (max-width: 991px) { .sidebar { width: 100%; position: relative; height: auto; display: block; } .main-content { margin-left: 0; padding: 20px; } .top-buttons { position: relative; top: 0; right: 0; margin-bottom: 20px; justify-content: center; flex-wrap: wrap;} }
-        
-        .generating-pdf * { animation: none !important; transition: none !important; opacity: 1 !important; text-shadow: none !important; box-shadow: none !important; }
-        .generating-pdf body { background-color: #ffffff !important; -webkit-print-color-adjust: exact; }
-        .generating-pdf .sidebar { position: absolute; left: 0; top: 0; height: 100%; background: #f8f9fa !important; border-right: 1px solid #ccc !important; }
-        .generating-pdf .main-content { margin-left: 280px !important; padding: 20px !important; background: white !important; }
-        .generating-pdf .top-buttons, .generating-pdf .btn-config-menu { display: none !important; }
-        .generating-pdf .pdf-visible-content { display: block !important; margin-top: 10px; padding: 10px; border: 1px solid #eee; background: #fafafa; border-radius: 8px; }
-        .generating-pdf .cert-img-pdf { width: 100%; max-width: 300px; height: auto; display: block; margin: 10px auto; border: 5px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2) !important; }
-        .generating-pdf h2 { color: #ec4899 !important; }
-        
-        .d-none-web { display: none !important; }
-        .generating-pdf .d-none-pdf { display: none !important; } 
+
+        /* ==========================================================================
+           👇👇👇 AQUÍ ESTÁ LA MAGIA PARA LA IMPRESIÓN TIPO CAPTURA 👇👇👇
+           ========================================================================== */
+        @media print {
+            /* 1. Configuración de página limpia */
+            @page { margin: 0; size: auto; }
+            body { 
+                background-color: white !important; 
+                color: black !important;
+                -webkit-print-color-adjust: exact !important; /* Forza colores de fondo */
+                print-color-adjust: exact !important;
+                margin: 0 !important;
+                overflow: visible !important;
+            }
+
+            /* 2. Ocultar botones y navegación */
+            .top-buttons, .btn-config-menu, .modal, .d-none-pdf, .btn { 
+                display: none !important; 
+            }
+            .nav-pills { display: none !important; }
+
+            /* 3. Sidebar Fija a la izquierda (Estilo Captura) */
+            .sidebar {
+                position: fixed !important;
+                left: 0 !important;
+                top: 0 !important;
+                bottom: 0 !important;
+                height: 100% !important;
+                width: 280px !important;
+                border-right: 2px solid #ddd !important;
+                background-color: #ffffff !important; 
+                z-index: 1000;
+            }
+
+            /* 4. Contenido a la derecha */
+            .main-content {
+                margin-left: 280px !important; 
+                padding: 30px !important;
+                width: calc(100% - 280px) !important;
+                overflow: visible !important;
+            }
+
+            /* 5. Mostrar TODAS las secciones visibles (ignora las pestañas) */
+            section { 
+                display: block !important; 
+                opacity: 1 !important;
+                visibility: visible !important;
+                page-break-inside: avoid;
+                margin-bottom: 30px !important;
+            }
+
+            /* 6. CLASE PARA OCULTAR LO QUE NO SELECCIONES */
+            section.no-imprimir {
+                display: none !important;
+            }
+
+            /* 7. Estilos Venta de Garage (Lista) en PDF */
+            #garage-print-section {
+                /* Se muestra solo si se selecciona en el modal */
+                display: block !important;
+                page-break-before: always;
+            }
+            #garage-print-section.no-imprimir {
+                display: none !important;
+            }
+            .garage-list-item {
+                border-bottom: 1px solid #eee;
+                padding: 10px 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .garage-price { color: #28a745; font-weight: bold; font-size: 1.1rem; }
+
+            /* 8. Imágenes Grandes de Certificados */
+            .pdf-cert-container {
+                display: block !important;
+                height: auto !important;
+                visibility: visible !important;
+                margin-top: 15px;
+            }
+            .pdf-cert-img {
+                width: 100% !important;
+                max-width: 500px;
+                height: auto;
+                border: 1px solid #ccc;
+            }
+        }
     </style>
 </head>
 <body id="body-cv">
@@ -306,8 +406,26 @@
                             {% if exp.nombrecontactoempresarial %}{{ exp.nombrecontactoempresarial }}{% endif %}
                             {% if exp.telefonocontactoempresarial %} ({{ exp.telefonocontactoempresarial }}){% endif %}
                             {% if exp.emailempresa %} - {{ exp.emailempresa }}{% endif %}
+                            
                             {% if exp.sitiowebempresa %} 
                                 <br><a href="{{ exp.sitiowebempresa }}" target="_blank" class="text-decoration-none"><i class="fas fa-link"></i> Web Empresa</a>
+                            {% endif %}
+
+                            {% if exp.rutacertificado %}
+                            <div class="mt-2 pt-2 border-top border-secondary d-none-pdf">
+                                <button class="btn btn-sm btn-outline-dark" 
+                                        type="button"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#certificadoModal" 
+                                        data-bs-img="{{ exp.rutacertificado.url }}">
+                                    <i class="fas fa-file-contract"></i> Ver Certificado Laboral
+                                </button>
+                            </div>
+
+                            <div class="pdf-cert-container">
+                                <p class="text-start small fw-bold mb-1 mt-2 text-dark"><i class="fas fa-paperclip"></i> Evidencia Adjunta:</p>
+                                <img src="{{ exp.rutacertificado.url }}" class="pdf-cert-img" alt="Certificado Laboral">
+                            </div>
                             {% endif %}
                         </div>
                     </div>
@@ -347,16 +465,22 @@
                             </div>
                             <h5 class="fw-bold text-dark mb-1">{{ rec.descripcionreconocimiento }}</h5>
                             <p class="text-primary fw-bold mb-2">{{ rec.entidadpatrocinadora }}</p>
+                            
                             {% if rec.rutacertificado %}
-                            <button class="btn btn-outline-dark btn-sm w-100 mt-3" type="button" 
-    data-bs-toggle="modal" 
-    data-bs-target="#certificadoModal" 
-    data-bs-img="{% if 'rosseta' in rec.descripcionreconocimiento|lower or 'ingles' in rec.descripcionreconocimiento|lower %}{% static 'cert_ingles.png' %}{% elif 'titulo' in rec.descripcionreconocimiento|lower or 'bachiller' in rec.descripcionreconocimiento|lower %}{% static 'cert_titulo.png' %}{% elif rec.rutacertificado %}{{ rec.rutacertificado.url }}{% endif %}">
-    <i class="fas fa-eye"></i> Ver Credencial
-</button>
+                            <button class="btn btn-outline-dark btn-sm w-100 mt-3 d-none-pdf" type="button" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#certificadoModal" 
+                                data-bs-img="{% if 'rosseta' in rec.descripcionreconocimiento|lower or 'ingles' in rec.descripcionreconocimiento|lower %}{% static 'cert_ingles.png' %}{% elif 'titulo' in rec.descripcionreconocimiento|lower or 'bachiller' in rec.descripcionreconocimiento|lower %}{% static 'cert_titulo.png' %}{% elif rec.rutacertificado %}{{ rec.rutacertificado.url }}{% endif %}">
+                                <i class="fas fa-eye"></i> Ver Credencial
                             </button>
-                            <div class="pdf-visible-content"><img src="{{ rec.rutacertificado.url }}" class="cert-img-pdf" alt="Certificado"></div>
+
+                            <div class="pdf-cert-container">
+                                <p class="text-start small fw-bold mb-1 mt-2 text-dark">Certificado:</p>
+                                <img src="{% if 'rosseta' in rec.descripcionreconocimiento|lower or 'ingles' in rec.descripcionreconocimiento|lower %}{% static 'cert_ingles.png' %}{% elif 'titulo' in rec.descripcionreconocimiento|lower or 'bachiller' in rec.descripcionreconocimiento|lower %}{% static 'cert_titulo.png' %}{% elif rec.rutacertificado %}{{ rec.rutacertificado.url }}{% endif %}" 
+                                     class="pdf-cert-img" alt="Certificado">
+                            </div>
                             {% endif %}
+                            
                             {% if rec.nombrecontactoauspicia or rec.telefonocontactoauspicia %}
                             <div class="mt-3 pt-2 border-top small text-muted">
                                 <i class="fas fa-info-circle"></i> 
@@ -397,13 +521,19 @@
                                 {% if cur.telefonocontactoauspicia %}({{ cur.telefonocontactoauspicia }}){% endif %}
                             </div>
                             {% if cur.rutacertificado %}
-                            <button class="btn btn-sm btn-outline-primary mt-2 mt-md-0" 
-    data-bs-toggle="modal" 
-    data-bs-target="#certificadoModal" 
-    data-bs-img="{% if 'netzun' in cur.nombrecurso|lower %}{% static 'CursoNetzun.png' %}{% elif cur.rutacertificado %}{{ cur.rutacertificado.url }}{% endif %}">
-    <i class="fas fa-file-certificate"></i> Ver Certificado
-</button>
-                            <div class="pdf-visible-content"><img src="{{ cur.rutacertificado.url }}" class="cert-img-pdf" alt="Certificado Curso"></div>
+                            <button class="btn btn-sm btn-outline-primary mt-2 mt-md-0 d-none-pdf" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#certificadoModal" 
+                                data-bs-img="{% if 'netzun' in cur.nombrecurso|lower %}{% static 'CursoNetzun.png' %}{% elif cur.rutacertificado %}{{ cur.rutacertificado.url }}{% endif %}">
+                                <i class="fas fa-file-certificate"></i> Ver Certificado
+                            </button>
+
+                            <div class="w-100"></div>
+                            <div class="pdf-cert-container">
+                                <p class="text-start small fw-bold mb-1 mt-2 text-dark">Certificado Curso:</p>
+                                <img src="{% if 'netzun' in cur.nombrecurso|lower %}{% static 'CursoNetzun.png' %}{% elif cur.rutacertificado %}{{ cur.rutacertificado.url }}{% endif %}" 
+                                     class="pdf-cert-img" alt="Certificado Curso">
+                            </div>
                             {% endif %}
                         </div>
                     </div>
@@ -412,7 +542,25 @@
                 {% endfor %}
             </div>
         </section>
-    </main>
+
+        <section id="garage-print-section" style="display: none;">
+            <div class="section-header" style="border-left: 5px solid var(--garage-color); padding-left: 15px;">
+                <h2 style="color: var(--garage-color) !important;">Venta de Garage / Otros Items</h2>
+            </div>
+            <div class="info-card">
+                {% for prod in productos_garage %}
+                <div class="garage-list-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-1">{{ prod.nombreproducto }}</h5>
+                        <span class="garage-price">${{ prod.valordelbien }}</span>
+                    </div>
+                    <p class="mb-1 text-muted">{{ prod.descripcion }}</p>
+                    <small>Estado: <strong>{{ prod.estadoproducto }}</strong></small>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        </main>
 
     <div class="modal fade" id="webConfigModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -451,9 +599,15 @@
                     <div class="form-check form-switch mb-2"><input class="form-check-input pdf-check" type="checkbox" checked data-target="productos_laborales"><label class="form-check-label">Productos Laborales</label></div>
                     <div class="form-check form-switch mb-2"><input class="form-check-input pdf-check" type="checkbox" checked data-target="reconocimientos"><label class="form-check-label">Reconocimientos</label></div>
                     <div class="form-check form-switch mb-2"><input class="form-check-input pdf-check" type="checkbox" checked data-target="cursos"><label class="form-check-label">Cursos</label></div>
+                    
+                    <hr>
+                    <div class="form-check form-switch mb-2">
+                        <input class="form-check-input pdf-check" type="checkbox" data-target="garage-print-section">
+                        <label class="form-check-label fw-bold text-warning">Incluir Venta de Garage (Lista al final)</label>
+                    </div>
                 </div>
                 <div class="modal-footer border-0">
-                    <button type="button" class="btn btn-danger w-100 rounded-pill" onclick="generarPDFManaged()">Descargar PDF</button>
+                    <button type="button" class="btn btn-danger w-100 rounded-pill" onclick="imprimirNativoConSeleccion()">Descargar PDF</button>
                 </div>
             </div>
         </div>
@@ -476,20 +630,19 @@
                                 </span>
 
                                 <img 
-    src="{% if prod.imagen %}{{ prod.imagen.url }}{% else %}{% if 'ventilador' in prod.nombreproducto|lower %}{% static 'ventilador.jpg' %}{% elif 'ouse' in prod.nombreproducto|lower %}{% static 'mouse.jpg' %}{% elif 'aptop' in prod.nombreproducto|lower %}{% static 'laptop.jpg' %}{% else %}{% static 'ventilador.jpg' %}{% endif %}{% endif %}" 
-    class="product-img" 
-    alt="{{ prod.nombreproducto }}" 
-    onerror="this.onerror=null;this.src='{% if 'ventilador' in prod.nombreproducto|lower %}{% static 'ventilador.jpg' %}{% elif 'ouse' in prod.nombreproducto|lower %}{% static 'mouse.jpg' %}{% elif 'aptop' in prod.nombreproducto|lower %}{% static 'laptop.jpg' %}{% else %}{% static 'ventilador.jpg' %}{% endif %}'"
->
->
+                                    src="{% if prod.imagen %}{{ prod.imagen.url }}{% else %}{% if 'ventilador' in prod.nombreproducto|lower %}{% static 'ventilador.jpg' %}{% elif 'ouse' in prod.nombreproducto|lower %}{% static 'mouse.jpg' %}{% elif 'aptop' in prod.nombreproducto|lower %}{% static 'laptop.jpg' %}{% else %}{% static 'ventilador.jpg' %}{% endif %}{% endif %}" 
+                                    class="product-img" 
+                                    alt="{{ prod.nombreproducto }}" 
+                                    onerror="this.onerror=null;this.src='{% if 'ventilador' in prod.nombreproducto|lower %}{% static 'ventilador.jpg' %}{% elif 'ouse' in prod.nombreproducto|lower %}{% static 'mouse.jpg' %}{% elif 'aptop' in prod.nombreproducto|lower %}{% static 'laptop.jpg' %}{% else %}{% static 'ventilador.jpg' %}{% endif %}'"
+                                >
                                 
                                 <h5 class="fw-bold text-dark mt-2">{{ prod.nombreproducto }}</h5>
                                 <p class="text-muted small">{{ prod.descripcion|truncatechars:50 }}</p>
                                 <div class="product-price">${{ prod.valordelbien }}</div>
                                 <button class="btn btn-success w-100 fw-bold rounded-pill text-white" 
-    onclick="enviarWhatsapp('{{ prod.nombreproducto|escapejs }}', '{{ prod.valordelbien }}', '{{ perfil.telefonofijo }}')">
-    <i class="fab fa-whatsapp fa-lg"></i> Comprar vía WhatsApp
-</button>
+                                    onclick="enviarWhatsapp('{{ prod.nombreproducto|escapejs }}', '{{ prod.valordelbien }}', '{{ perfil.telefonofijo }}')">
+                                    <i class="fab fa-whatsapp fa-lg"></i> Comprar vía WhatsApp
+                                </button>
                             </div>
                         </div>
                         {% empty %}
@@ -528,11 +681,13 @@
                     localStorage.setItem('theme', 'light');
                 }
             };
+            
             // Cargar preferencia guardada
             if(localStorage.getItem('theme') === 'dark') {
                 document.body.classList.add('dark-mode');
                 setTimeout(() => document.querySelector('.fa-moon')?.classList.replace('fa-moon', 'fa-sun'), 100);
             }
+
             window.toggleWeb = function(elementId, isChecked) {
                 const el = document.getElementById(elementId);
                 if(el) {
@@ -562,75 +717,56 @@
                 });
             }
 
-            window.generarPDFManaged = function() {
-                const modalEl = document.getElementById('pdfConfigModal');
-                const modal = bootstrap.Modal.getInstance(modalEl);
-                if(modal) modal.hide();
-
-                const element = document.getElementById('body-cv');
-                const btn = document.querySelector('.btn-pdf');
-                const originalText = '<i class="fas fa-file-pdf"></i> PDF';
-                
-                if(btn) btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando...';
-                document.body.classList.add('generating-pdf');
-
-                const checks = document.querySelectorAll('.pdf-check');
-                checks.forEach(chk => {
-                    const target = document.getElementById(chk.getAttribute('data-target'));
-                    if(target) {
-                        if(!chk.checked) target.classList.add('d-none-pdf');
-                        else target.style.display = 'block'; 
-                    }
-                });
-
-                const opt = {
-                    margin: 0,
-                    filename: 'CV_{{ perfil.nombres }}.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                };
-
-                setTimeout(() => {
-                    html2pdf().set(opt).from(element).save()
-                    .then(() => { limpiarTodo(btn, originalText); })
-                    .catch((err) => { 
-                        console.error(err); 
-                        limpiarTodo(btn, originalText); 
-                    });
-                }, 800);
-            };
-
-            function limpiarTodo(btn, originalText) {
-                document.body.classList.remove('generating-pdf');
-                if(btn) btn.innerHTML = originalText;
-                document.querySelectorAll('section').forEach(sec => {
-                    sec.style.display = ''; 
-                    sec.classList.remove('d-none-pdf');
-                });
-            }
-        });
-        // --- FUNCIÓN WHATSAPP GARAGE ---
+            // --- FUNCIÓN WHATSAPP GARAGE ---
             window.enviarWhatsapp = function(producto, precio, telefono) {
                 if(!telefono || telefono.length < 9) { 
                     alert("El vendedor no tiene un celular registrado."); 
                     return; 
                 }
                 
-                // Limpieza del número (Asumiendo Ecuador 593)
-                // Si empieza con 0 (ej: 098...), se lo quita y agrega 593
                 let numero = telefono.replace(/\D/g, ''); 
                 if(numero.startsWith('0')) {
                     numero = '593' + numero.substring(1);
                 }
 
-                // Mensaje personalizado
                 let mensaje = `Hola, vi tu Garage en la web. Estoy interesado en el producto: *${producto}* que cuesta *$${precio}*. ¿Todavía lo tienes?`;
-                
-                // Abrir WhatsApp
                 let url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
                 window.open(url, '_blank');
             };
+
+            // --- NUEVA FUNCIÓN: IMPRIMIR NATIVO CON FILTRO ---
+            window.imprimirNativoConSeleccion = function() {
+                // 1. Cerrar el modal
+                const modalEl = document.getElementById('pdfConfigModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) modal.hide();
+
+                // 2. Revisar qué checkboxes están DESMARCADOS
+                const checks = document.querySelectorAll('.pdf-check');
+                
+                // Limpiar clases previas
+                document.querySelectorAll('section').forEach(sec => sec.classList.remove('no-imprimir'));
+
+                // Aplicar clase .no-imprimir a las secciones desmarcadas
+                checks.forEach(chk => {
+                    if (!chk.checked) {
+                        const targetId = chk.getAttribute('data-target');
+                        const targetSection = document.getElementById(targetId);
+                        if (targetSection) {
+                            targetSection.classList.add('no-imprimir');
+                        }
+                    }
+                });
+
+                // 3. Ejecutar la impresión nativa (delay para que el modal cierre bien)
+                setTimeout(() => {
+                    window.print();
+                    
+                    // 4. Restaurar todo después de imprimir
+                    document.querySelectorAll('section').forEach(sec => sec.classList.remove('no-imprimir'));
+                }, 500);
+            };
+        });
     </script>
 </body>
 </html>

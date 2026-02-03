@@ -53,8 +53,12 @@ class DatosPersonales(models.Model):
 
     # Validación de Fecha de Nacimiento
     def clean(self):
+        # 1. No Futuro
         if self.fechanacimiento and self.fechanacimiento > date.today():
             raise ValidationError({'fechanacimiento': "⛔ Error: ¡No puedes nacer en el futuro! Ingresa una fecha válida."})
+        # 2. Mínimo 2005
+        if self.fechanacimiento and self.fechanacimiento < date(2005, 1, 1):
+            raise ValidationError({'fechanacimiento': "⛔ Error: La fecha no puede ser anterior al año 2005."})
 
     def save(self, *args, **kwargs):
         self.full_clean()
@@ -84,15 +88,21 @@ class ExperienciaLaboral(models.Model):
 
     # --- VALIDACIÓN DE FECHAS EN EXPERIENCIA ---
     def clean(self):
-        # 1. Validar que la fecha de INICIO no sea futura
-        if self.fechainiciogestion and self.fechainiciogestion > date.today():
-            raise ValidationError({'fechainiciogestion': "⛔ Error: La fecha de inicio no puede ser futura."})
+        # Validar Inicio (No futuro y > 2005)
+        if self.fechainiciogestion:
+            if self.fechainiciogestion > date.today():
+                raise ValidationError({'fechainiciogestion': "⛔ Error: La fecha de inicio no puede ser futura."})
+            if self.fechainiciogestion < date(2005, 1, 1):
+                raise ValidationError({'fechainiciogestion': "⛔ Error: La fecha de inicio no puede ser anterior a 2005."})
 
-        # 2. Validar que la fecha de FIN no sea futura (si existe)
-        if self.fechafingestion and self.fechafingestion > date.today():
-            raise ValidationError({'fechafingestion': "⛔ Error: La fecha de fin no puede ser futura."})
+        # Validar Fin (No futuro y > 2005)
+        if self.fechafingestion:
+            if self.fechafingestion > date.today():
+                raise ValidationError({'fechafingestion': "⛔ Error: La fecha de fin no puede ser futura."})
+            if self.fechafingestion < date(2005, 1, 1):
+                raise ValidationError({'fechafingestion': "⛔ Error: La fecha de fin no puede ser anterior a 2005."})
 
-        # 3. Validar coherencia (Fin debe ser después de Inicio)
+        # Validar coherencia
         if self.fechafingestion and self.fechainiciogestion and self.fechafingestion < self.fechainiciogestion:
             raise ValidationError("⛔ Error Lógico: Terminaste el trabajo antes de empezarlo. Revisa las fechas.")
 
@@ -114,8 +124,33 @@ class CursoRealizado(models.Model):
     emailempresapatrocinadora = models.CharField(max_length=60, verbose_name="Email Empresa", blank=True, null=True)
     activarparaqueseveaenfront = models.BooleanField(default=True, verbose_name="Mostrar en la Web")
     rutacertificado = models.ImageField(upload_to='certificados_cursos/', verbose_name="Certificado", blank=True, null=True)
+    
     def __str__(self):
         return self.nombrecurso
+
+    # --- VALIDACIÓN DE FECHAS EN CURSOS ---
+    def clean(self):
+        # Validar Inicio
+        if self.fechainicio:
+            if self.fechainicio > date.today():
+                raise ValidationError({'fechainicio': "⛔ Error: La fecha de inicio no puede ser futura."})
+            if self.fechainicio < date(2005, 1, 1):
+                raise ValidationError({'fechainicio': "⛔ Error: La fecha de inicio no puede ser anterior a 2005."})
+
+        # Validar Fin
+        if self.fechafin:
+            if self.fechafin > date.today():
+                raise ValidationError({'fechafin': "⛔ Error: La fecha de fin no puede ser futura."})
+            if self.fechafin < date(2005, 1, 1):
+                raise ValidationError({'fechafin': "⛔ Error: La fecha de fin no puede ser anterior a 2005."})
+
+        # Validar Coherencia
+        if self.fechafin and self.fechainicio and self.fechafin < self.fechainicio:
+            raise ValidationError("⛔ Error Lógico: El curso no puede terminar antes de empezar.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 # --- RECONOCIMIENTOS ---
 class Reconocimiento(models.Model):
@@ -129,8 +164,21 @@ class Reconocimiento(models.Model):
     telefonocontactoauspicia = models.CharField(max_length=60, verbose_name="Teléfono Contacto", blank=True, null=True)
     activarparaqueseveaenfront = models.BooleanField(default=True, verbose_name="Mostrar en la Web")
     rutacertificado = models.ImageField(upload_to='certificados/', verbose_name="Imagen del Certificado", null=True, blank=True)
+    
     def __str__(self):
         return f"{self.descripcionreconocimiento} - {self.entidadpatrocinadora}"
+
+    # --- VALIDACIÓN DE FECHA EN RECONOCIMIENTOS ---
+    def clean(self):
+        if self.fechareconocimiento:
+            if self.fechareconocimiento > date.today():
+                raise ValidationError({'fechareconocimiento': "⛔ Error: La fecha del reconocimiento no puede ser futura."})
+            if self.fechareconocimiento < date(2005, 1, 1):
+                raise ValidationError({'fechareconocimiento': "⛔ Error: La fecha no puede ser anterior a 2005."})
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 # --- PRODUCTOS ACADEMICOS ---
 class ProductoAcademico(models.Model):
@@ -151,6 +199,18 @@ class ProductoLaboral(models.Model):
     activarparaqueseveaenfront = models.BooleanField(default=True, verbose_name="Mostrar en la Web")
     def __str__(self):
         return self.nombreproducto
+
+    # --- VALIDACIÓN DE FECHA PRODUCTOS ---
+    def clean(self):
+        if self.fechaproducto:
+            if self.fechaproducto > date.today():
+                raise ValidationError({'fechaproducto': "⛔ Error: La fecha del producto no puede ser futura."})
+            if self.fechaproducto < date(2005, 1, 1):
+                raise ValidationError({'fechaproducto': "⛔ Error: La fecha no puede ser anterior a 2005."})
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
 # --- VENTA GARAGE ---
 class VentaGarage(models.Model):
