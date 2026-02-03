@@ -348,8 +348,12 @@
                             <h5 class="fw-bold text-dark mb-1">{{ rec.descripcionreconocimiento }}</h5>
                             <p class="text-primary fw-bold mb-2">{{ rec.entidadpatrocinadora }}</p>
                             {% if rec.rutacertificado %}
-                            <button class="btn btn-outline-dark btn-sm w-100 mt-3" type="button" data-bs-toggle="modal" data-bs-target="#certificadoModal" data-bs-img="{{ rec.rutacertificado.url }}">
-                                <i class="fas fa-eye"></i> Ver Credencial
+                            <button class="btn btn-outline-dark btn-sm w-100 mt-3" type="button" 
+    data-bs-toggle="modal" 
+    data-bs-target="#certificadoModal" 
+    data-bs-img="{% if 'rosseta' in rec.descripcionreconocimiento|lower or 'ingles' in rec.descripcionreconocimiento|lower %}{% static 'cert_ingles.png' %}{% elif 'titulo' in rec.descripcionreconocimiento|lower or 'bachiller' in rec.descripcionreconocimiento|lower %}{% static 'cert_titulo.png' %}{% elif rec.rutacertificado %}{{ rec.rutacertificado.url }}{% endif %}">
+    <i class="fas fa-eye"></i> Ver Credencial
+</button>
                             </button>
                             <div class="pdf-visible-content"><img src="{{ rec.rutacertificado.url }}" class="cert-img-pdf" alt="Certificado"></div>
                             {% endif %}
@@ -393,9 +397,12 @@
                                 {% if cur.telefonocontactoauspicia %}({{ cur.telefonocontactoauspicia }}){% endif %}
                             </div>
                             {% if cur.rutacertificado %}
-                            <button class="btn btn-sm btn-outline-primary mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#certificadoModal" data-bs-img="{{ cur.rutacertificado.url }}">
-                                <i class="fas fa-file-certificate"></i> Ver Certificado
-                            </button>
+                            <button class="btn btn-sm btn-outline-primary mt-2 mt-md-0" 
+    data-bs-toggle="modal" 
+    data-bs-target="#certificadoModal" 
+    data-bs-img="{% if 'netzun' in cur.nombrecurso|lower %}{% static 'CursoNetzun.png' %}{% elif cur.rutacertificado %}{{ cur.rutacertificado.url }}{% endif %}">
+    <i class="fas fa-file-certificate"></i> Ver Certificado
+</button>
                             <div class="pdf-visible-content"><img src="{{ cur.rutacertificado.url }}" class="cert-img-pdf" alt="Certificado Curso"></div>
                             {% endif %}
                         </div>
@@ -468,7 +475,12 @@
                                     {{ prod.estadoproducto }}
                                 </span>
 
-                                <img src="{% if prod.imagen %}{{ prod.imagen.url }}{% else %}{% static 'ventilador.jpg' %}{% endif %}" class="product-img" alt="{{ prod.nombreproducto }}" onerror="this.src='{% static 'ventilador.jpg' %}'">
+                                <img 
+    src="{% if prod.imagen %}{{ prod.imagen.url }}{% else %}{% if 'ouse' in prod.nombreproducto|lower %}{% static 'mouse.jpg' %}{% elif 'aptop' in prod.nombreproducto|lower %}{% static 'laptop.jpg' %}{% else %}{% static 'ventilador.jpg' %}{% endif %}{% endif %}" 
+    class="product-img" 
+    alt="{{ prod.nombreproducto }}" 
+    onerror="this.onerror=null;this.src='{% if 'ouse' in prod.nombreproducto|lower %}{% static 'mouse.jpg' %}{% elif 'aptop' in prod.nombreproducto|lower %}{% static 'laptop.jpg' %}{% else %}{% static 'ventilador.jpg' %}{% endif %}'"
+>
                                 
                                 <h5 class="fw-bold text-dark mt-2">{{ prod.nombreproducto }}</h5>
                                 <p class="text-muted small">{{ prod.descripcion|truncatechars:50 }}</p>
