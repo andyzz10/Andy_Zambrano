@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
+from datetime import date
 
 # --- MODELO DE TAREAS ---
 class Task(models.Model):
@@ -11,6 +12,8 @@ class Task(models.Model):
     datecompleted = models.DateTimeField(null=True, blank=True)
     important = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    #validacionfechanacimiento
+    
 
     def __str__(self):
         return self.title + ' - by ' + self.user.username
@@ -49,7 +52,20 @@ class DatosPersonales(models.Model):
 
     mostrar_botones = models.BooleanField(default=True, verbose_name="Mostrar Botones Superiores")
     foto_portada = models.ImageField(upload_to='portadas/', verbose_name="Foto de Portada", blank=True, null=True)
+#ValidacionFechaNacimiento
+    # ... (tus campos anteriores: mostrar_garage, foto_portada, etc.) ...
 
+    def clean(self):
+        # Validación: Fecha de nacimiento no puede ser futura
+        if self.fechanacimiento and self.fechanacimiento > date.today():
+            raise ValidationError({'fechanacimiento': "⛔ Error: ¡No puedes nacer en el futuro! Ingresa una fecha válida."})
+
+    def save(self, *args, **kwargs):
+        self.full_clean() # Esto obliga a ejecutar la validación antes de guardar
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.nombres} {self.apellidos}"
     def __str__(self):
         return f"{self.nombres} {self.apellidos}"
 
