@@ -170,3 +170,12 @@ class VentaGarage(models.Model):
 
     def __str__(self):
         return f"{self.nombreproducto} - ${self.valordelbien}"
+
+    # --- VALIDACIÓN DE PRECIO NEGATIVO ---
+    def clean(self):
+        if self.valordelbien is not None and self.valordelbien < 0:
+            raise ValidationError({'valordelbien': "⛔ Error: ¡El precio no puede ser negativo! No puedes pagar para que se lo lleven."})
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)

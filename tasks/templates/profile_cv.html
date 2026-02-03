@@ -486,7 +486,10 @@
                                 <h5 class="fw-bold text-dark mt-2">{{ prod.nombreproducto }}</h5>
                                 <p class="text-muted small">{{ prod.descripcion|truncatechars:50 }}</p>
                                 <div class="product-price">${{ prod.valordelbien }}</div>
-                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white" onclick="alert('¡{{ prod.nombreproducto|escapejs }} agregado al carrito!')"><i class="fas fa-cart-plus"></i> Comprar</button>
+                                <button class="btn btn-success w-100 fw-bold rounded-pill text-white" 
+    onclick="enviarWhatsapp('{{ prod.nombreproducto|escapejs }}', '{{ prod.valordelbien }}', '{{ perfil.telefonofijo }}')">
+    <i class="fab fa-whatsapp fa-lg"></i> Comprar vía WhatsApp
+</button>
                             </div>
                         </div>
                         {% empty %}
@@ -607,6 +610,27 @@
                 });
             }
         });
+        // --- FUNCIÓN WHATSAPP GARAGE ---
+            window.enviarWhatsapp = function(producto, precio, telefono) {
+                if(!telefono || telefono.length < 9) { 
+                    alert("El vendedor no tiene un celular registrado."); 
+                    return; 
+                }
+                
+                // Limpieza del número (Asumiendo Ecuador 593)
+                // Si empieza con 0 (ej: 098...), se lo quita y agrega 593
+                let numero = telefono.replace(/\D/g, ''); 
+                if(numero.startsWith('0')) {
+                    numero = '593' + numero.substring(1);
+                }
+
+                // Mensaje personalizado
+                let mensaje = `Hola, vi tu Garage en la web. Estoy interesado en el producto: *${producto}* que cuesta *$${precio}*. ¿Todavía lo tienes?`;
+                
+                // Abrir WhatsApp
+                let url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+                window.open(url, '_blank');
+            };
     </script>
 </body>
 </html>
