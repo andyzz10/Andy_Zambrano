@@ -209,27 +209,32 @@
     <div class="cards-container">
         
         {% for p in perfiles %}
-            <div class="profile-card" data-tilt data-tilt-glare data-tilt-max-glare="0.3" data-tilt-speed="400" onclick="location.href='{% url 'cv_view' p.id %}'">
+            <div class="profile-card" data-tilt onclick="location.href='{% url 'cv_view' p.id %}'">
                 
                 <div class="img-box">
-                    {% if p.foto %}
-                        <img src="{{ p.foto.url }}" alt="{{ p.nombres }}">
+                    {% if p.foto_portada %}
+                        <img src="{{ p.foto_portada.url }}" alt="{{ p.nombres }}">
                     {% else %}
-                        
+                        <img src="{% static 'perfil_andy.jpeg' %}" alt="Sin foto">
                     {% endif %}
                 </div>
                 
                 <div class="info-box">
                     <div class="name">{{ p.nombres }} {{ p.apellidos }}</div>
-                    <span class="role">{{ p.nacionalidad }}</span> <br>
+                    <span class="role">{{ p.nacionalidad }}</span>
+                    
+                    <p style="font-size: 0.8rem; margin-top: 10px; color: #ccc;">
+                        {{ p.descripcionperfil|truncatechars:80 }}
+                    </p>
+
                     <a href="{% url 'cv_view' p.id %}" class="btn-view">Ver Perfil</a>
                 </div>
 
             </div>
         {% empty %}
             <div class="empty-msg">
-                <h3>No hay perfiles detectados.</h3>
-                <p>Ingresa al Admin para crear tu primer perfil.</p>
+                <h3>No hay perfiles creados.</h3>
+                <p>Ve al Admin y agrega un 'Datos Personales'.</p>
             </div>
         {% endfor %}
 

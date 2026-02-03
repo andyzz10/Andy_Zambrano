@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.db import IntegrityError
 from .forms import TaskForm
-from .models import Task, DatosPersonales, ExperienciaLaboral, Habilidad, Reconocimiento, Educacion, ProductoGarage, RecursoAcademico
+from .models import Task, DatosPersonales, ExperienciaLaboral, CursoRealizado, Reconocimiento, ProductoLaboral, VentaGarage, ProductoAcademico
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 
@@ -21,25 +21,26 @@ def welcome_view(request):
     return render(request, 'home.html', {'perfiles': perfiles})
 
 def cv_view(request, profile_id):
-    # Vista detallada de un perfil específico
     perfil = get_object_or_404(DatosPersonales, id=profile_id)
-    experiencias = ExperienciaLaboral.objects.filter(perfil=perfil).order_by('-fecha_inicio')
-    habilidades = Habilidad.objects.filter(perfil=perfil)
-    reconocimientos = Reconocimiento.objects.filter(perfil=perfil)
-    educacion = Educacion.objects.filter(perfil=perfil).order_by('-fecha_inicio')
-    productos = ProductoGarage.objects.filter(perfil=perfil)
-    recursos = RecursoAcademico.objects.filter(perfil=perfil)
     
+    experiencias = ExperienciaLaboral.objects.filter(perfil=perfil, activarparaqueseveaenfront=True).order_by('-fechainiciogestion')
+    # AQUÍ EL CAMBIO: Cargamos Cursos en vez de Habilidades
+    cursos = CursoRealizado.objects.filter(perfil=perfil, activarparaqueseveaenfront=True).order_by('-fechainicio')
+    
+    productos_laborales = ProductoLaboral.objects.filter(perfil=perfil, activarparaqueseveaenfront=True).order_by('-fechaproducto')
+    reconocimientos = Reconocimiento.objects.filter(perfil=perfil, activarparaqueseveaenfront=True).order_by('-fechareconocimiento')
+    productos_garage = VentaGarage.objects.filter(perfil=perfil, activarparaqueseveaenfront=True)
+    productos_academicos = ProductoAcademico.objects.filter(perfil=perfil, activarparaqueseveaenfront=True)
 
     context = {
         'perfil': perfil,
         'experiencias': experiencias,
-        'habilidades': habilidades,
+        'cursos': cursos,        # Enviamos cursos
+        # 'habilidades': habilidades, <--- BORRADO
         'reconocimientos': reconocimientos,
-        'educacion': educacion,
-        'productos': productos,
-        'recursos': recursos
-        
+        'productos_laborales': productos_laborales,
+        'productos_garage': productos_garage,
+        'productos_academicos': productos_academicos,
     }
     return render(request, 'profile_cv.html', context)
 

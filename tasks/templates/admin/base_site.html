@@ -88,10 +88,16 @@
             color: #0575e6;
         }
 
-        /* Hover en filas */
-        tr:hover td {
-            background-color: #e8f4fc !important;
-        }
+        /* Hover en filas (Corregido para modo oscuro) */
+tr:hover td {
+    background-color: #2c3e50 !important; /* Un azul oscuro elegante */
+    color: #fff !important; /* Asegura que el texto siga blanco */
+}
+
+/* También arreglemos el color cuando seleccionas la casilla (el check) */
+tr.selected td {
+    background-color: #34495e !important;
+}
 
     </style>
 {% endblock %}

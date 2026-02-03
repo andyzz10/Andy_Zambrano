@@ -24,10 +24,11 @@
 
         body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--secondary-color); overflow-x: hidden; margin: 0; }
 
-        /* --- BARRA LATERAL --- */
         .sidebar { width: var(--sidebar-width); position: fixed; top: 0; bottom: 0; left: 0; background: white; border-right: 1px solid #e2e8f0; padding: 30px 20px; z-index: 1000; text-align: center; box-shadow: 2px 0 10px rgba(0,0,0,0.03); overflow-y: auto; display: flex; flex-direction: column; }
-        .profile-photo-container { width: 150px; height: 150px; margin: 0 auto 20px; border-radius: 50%; overflow: hidden; border: 4px solid white; box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2); }
+        
+        .profile-photo-container { width: 150px; height: 150px; margin: 0 auto 20px; border-radius: 50%; overflow: hidden; border: 4px solid white; box-shadow: 0 5px 15px rgba(37, 99, 235, 0.2); background: #eee; }
         .profile-photo { width: 100%; height: 100%; object-fit: cover; }
+        
         .profile-name { font-size: 1.2rem; font-weight: 700; color: var(--secondary-color); margin-bottom: 5px; }
         .profile-title { font-size: 0.9rem; color: #64748b; margin-bottom: 30px; }
         .nav-pills .nav-link { text-align: left; color: #64748b; font-weight: 500; padding: 12px 20px; margin-bottom: 8px; border-radius: 10px; cursor: pointer; transition: all 0.3s; }
@@ -36,28 +37,14 @@
         .nav-pills .nav-link.active i { color: white; }
         .nav-pills .nav-link i { width: 25px; color: var(--primary-color); }
 
-        /* Botón Configurar Menú */
-        .btn-config-menu {
-            margin-top: auto; 
-            border: 1px solid #dee2e6;
-            background: transparent;
-            color: #6c757d;
-            border-radius: 50px;
-            padding: 10px;
-            font-size: 0.9rem;
-            transition: 0.3s;
-            width: 100%;
-            text-align: center;
-        }
+        .btn-config-menu { margin-top: auto; border: 1px solid #dee2e6; background: transparent; color: #6c757d; border-radius: 50px; padding: 10px; font-size: 0.9rem; transition: 0.3s; width: 100%; text-align: center; }
         .btn-config-menu:hover { background: #f8f9fa; color: var(--primary-color); border-color: var(--primary-color); }
 
-        /* --- CONTENIDO PRINCIPAL --- */
         .main-content { margin-left: var(--sidebar-width); padding: 40px 60px; min-height: 100vh; }
         section { display: none; animation: fadeIn 0.4s ease-in-out; }
         section.active-section { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- TARJETAS --- */
         .section-header { margin-bottom: 30px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
         .section-header h2 { font-weight: 700; color: #ec4899; font-size: 1.8rem; }
         .info-card { background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid #f1f5f9; margin-bottom: 30px; }
@@ -69,10 +56,6 @@
         .recurso-item { border-left: 4px solid var(--accent-color); background: #f8f9fa; padding: 15px 20px; margin-bottom: 15px; border-radius: 0 10px 10px 0; transition: 0.3s; }
         .recurso-titulo { font-weight: 700; color: var(--secondary-color); margin-bottom: 5px; display: block; }
         
-        .tech-container { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
-        .tech-badge { background: #eff6ff; color: var(--primary-color); padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; border: 1px solid #dbeafe; transition: all 0.3s ease; cursor: pointer; position: relative; z-index: 50; }
-        .tech-badge:hover { background: var(--primary-color); color: white; transform: translateY(-3px); box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); z-index: 51; }
-
         .pdf-visible-content { display: none; } 
 
         .top-buttons { position: fixed; top: 30px; right: 30px; z-index: 1001; display: flex; gap: 15px; }
@@ -85,10 +68,12 @@
         .product-card { border: 1px solid #eee; border-radius: 15px; padding: 15px; text-align: center; transition: 0.3s; height: 100%; background: #fff; }
         .product-img { height: 120px; object-fit: contain; margin-bottom: 15px; }
         .product-price { color: var(--garage-color); font-weight: 800; font-size: 1.2rem; margin: 10px 0; }
+        .badge-estado { position: absolute; top: 10px; right: 10px; padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+        .bg-bueno { background: #28a745; color: white; }
+        .bg-regular { background: #ffc107; color: black; }
         
         @media (max-width: 991px) { .sidebar { width: 100%; position: relative; height: auto; display: block; } .main-content { margin-left: 0; padding: 20px; } .top-buttons { position: relative; top: 0; right: 0; margin-bottom: 20px; justify-content: center; flex-wrap: wrap;} }
         
-        /* ESTILOS PDF */
         .generating-pdf * { animation: none !important; transition: none !important; opacity: 1 !important; text-shadow: none !important; box-shadow: none !important; }
         .generating-pdf body { background-color: #ffffff !important; -webkit-print-color-adjust: exact; }
         .generating-pdf .sidebar { position: absolute; left: 0; top: 0; height: 100%; background: #f8f9fa !important; border-right: 1px solid #ccc !important; }
@@ -98,17 +83,19 @@
         .generating-pdf .cert-img-pdf { width: 100%; max-width: 300px; height: auto; display: block; margin: 10px auto; border: 5px solid #fff; box-shadow: 0 0 5px rgba(0,0,0,0.2) !important; }
         .generating-pdf h2 { color: #ec4899 !important; }
         
-        /* CLASES DE OCULTAMIENTO */
-        .d-none-web { display: none !important; } /* Ocultar en Web */
-        .generating-pdf .d-none-pdf { display: none !important; } /* Ocultar en PDF */
+        .d-none-web { display: none !important; }
+        .generating-pdf .d-none-pdf { display: none !important; } 
     </style>
 </head>
 <body id="body-cv">
 
     <div class="top-buttons">
+        {% if perfil.mostrar_garage %}
         <button id="btnGarageTop" class="btn-garage" data-bs-toggle="modal" data-bs-target="#garageModal">
             <i class="fas fa-shopping-cart"></i> Garage
         </button>
+        {% endif %}
+        
         <a href="/" class="btn-float"><i class="fas fa-home"></i> Inicio</a>
         {% if user.is_authenticated %}
             <a href="/logout/" class="btn-float text-danger" style="border-color: #dc3545; color: #dc3545;"><i class="fas fa-sign-out-alt"></i> Salir</a>
@@ -123,7 +110,7 @@
 
     <nav class="sidebar">
         <div class="profile-photo-container">
-            <img src="{% static 'perfil_andy.jpeg' %}" alt="{{ perfil.nombres }}" class="profile-photo" style="object-fit: cover;">
+            <img src="{% static 'perfil_andy.jpeg' %}" alt="{{ perfil.nombres }}" class="profile-photo">
         </div>
         
         <div class="profile-name">{{ perfil.nombres }} {{ perfil.apellidos }}</div>
@@ -133,21 +120,35 @@
         <div class="nav flex-column nav-pills">
             <a class="nav-link active" onclick="mostrarSeccion('inicio', this)"><i class="fas fa-user"></i> Inicio</a>
             
-            <span id="nav-recursos">
-                <a class="nav-link" onclick="mostrarSeccion('recursos', this)"><i class="fas fa-book-reader"></i> Recursos Académicos</a>
+            {% if perfil.mostrar_productos_academicos %}
+            <span id="nav-productos">
+                <a class="nav-link" onclick="mostrarSeccion('productos_academicos', this)"><i class="fas fa-book-reader"></i> Productos Académicos</a>
             </span>
+            {% endif %}
+
+            {% if perfil.mostrar_experiencia %}
             <span id="nav-experiencia">
                 <a class="nav-link" onclick="mostrarSeccion('experiencia', this)"><i class="fas fa-briefcase"></i> Experiencia</a>
             </span>
-            <span id="nav-educacion">
-                <a class="nav-link" onclick="mostrarSeccion('educacion', this)"><i class="fas fa-graduation-cap"></i> Educación</a>
+            {% endif %}
+
+            {% if perfil.mostrar_productos_laborales %}
+            <span id="nav-laborales">
+                <a class="nav-link" onclick="mostrarSeccion('productos_laborales', this)"><i class="fas fa-hammer"></i> Productos Laborales</a>
             </span>
+            {% endif %}
+
+            {% if perfil.mostrar_reconocimientos %}
             <span id="nav-reconocimientos">
                 <a class="nav-link" onclick="mostrarSeccion('reconocimientos', this)"><i class="fas fa-award"></i> Reconocimientos</a>
             </span>
-            <span id="nav-habilidades">
-                <a class="nav-link" onclick="mostrarSeccion('habilidades', this)"><i class="fas fa-star"></i> Habilidades</a>
+            {% endif %}
+
+            {% if perfil.mostrar_cursos %}
+            <span id="nav-cursos">
+                <a class="nav-link" onclick="mostrarSeccion('cursos', this)"><i class="fas fa-chalkboard-teacher"></i> Cursos Realizados</a>
             </span>
+            {% endif %}
         </div>
 
         <button class="btn-config-menu" data-bs-toggle="modal" data-bs-target="#webConfigModal">
@@ -161,38 +162,77 @@
             <div class="info-card">
                 <div class="icon-header"><i class="fas fa-user-circle"></i> Perfil Profesional</div>
                 <p class="text-muted mb-0" style="text-align: justify; line-height: 1.8;">
-                    {{ perfil.perfil_profesional|default:"Estudiante de la carrera de Tecnología de la Información..." }}
+                    {{ perfil.descripcionperfil|default:"Sin descripción." }}
                 </p>
+                {% if perfil.sitioweb %}
+                <div class="mt-3">
+                    <i class="fas fa-globe text-primary"></i> <a href="{{ perfil.sitioweb }}" target="_blank">{{ perfil.sitioweb }}</a>
+                </div>
+                {% endif %}
             </div>
+
             <div class="row">
                 <div class="col-md-6">
                     <div class="info-card h-100">
-                        <div class="icon-header"><i class="fas fa-id-card"></i> Datos</div>
-                        <div class="mb-3"><span class="info-label">Cédula:</span> <span class="info-value">{{ perfil.numerocedula }}</span></div>
-                        <div class="mb-3"><span class="info-label">Nacionalidad:</span> <span class="info-value">{{ perfil.nacionalidad|default:"Ecuatoriana" }}</span></div>
-                        <div class="mb-3"><span class="info-label">Nacimiento:</span> <span class="info-value">15 Agosto 2005</span></div>
+                        <div class="icon-header"><i class="fas fa-id-card"></i> Datos Personales</div>
+                        <div class="mb-2"><span class="info-label">Cédula:</span> <span class="info-value">{{ perfil.numerocedula }}</span></div>
+                        <div class="mb-2"><span class="info-label">Nacimiento:</span> <span class="info-value">{{ perfil.fechanacimiento }}</span></div>
+                        <div class="mb-2"><span class="info-label">Nacionalidad:</span> <span class="info-value">{{ perfil.nacionalidad|default:"Ecuatoriana" }}</span></div>
+                        <div class="mb-2"><span class="info-label">Sexo:</span> <span class="info-value">{{ perfil.get_sexo_display }}</span></div>
+                        <div class="mb-2"><span class="info-label">Estado Civil:</span> <span class="info-value">{{ perfil.estadocivil }}</span></div>
+                        {% if perfil.licenciaconducir %}
+                        <div class="mb-2"><span class="info-label">Licencia:</span> <span class="info-value">{{ perfil.licenciaconducir }}</span></div>
+                        {% else %}
+                        <div class="mb-2"><span class="info-label">Licencia:</span> <span class="info-value text-muted">No registrada</span></div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="info-card h-100">
-                        <div class="icon-header"><i class="fas fa-envelope"></i> Contacto</div>
-                        <div class="mb-3"><span class="info-label">Teléfono:</span> <span class="info-value">{{ perfil.telefonofijo }}</span></div>
-                        <div class="mb-3"><span class="info-label">Email:</span> <span class="info-value">andy@ejemplo.com</span></div>
+                        <div class="icon-header"><i class="fas fa-map-marker-alt"></i> Ubicación y Contacto</div>
+                        <div class="mb-3">
+                            <span class="info-label"><i class="fas fa-mobile-alt"></i> Celular:</span> 
+                            <span class="info-value">{{ perfil.telefonofijo }}</span>
+                        </div>
+                        {% if perfil.telefonoconvencional %}
+                        <div class="mb-3">
+                            <span class="info-label"><i class="fas fa-phone"></i> Convencional:</span> 
+                            <span class="info-value">{{ perfil.telefonoconvencional }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="mb-3">
+                            <span class="info-label"><i class="fas fa-envelope"></i> Email:</span>
+                            <span class="info-value">andy@ejemplo.com</span>
+                        </div>
+                        <hr class="text-muted">
+                        <div class="mb-2">
+                            <span class="info-label"><i class="fas fa-home"></i> Domicilio:</span> 
+                            <span class="info-value">{{ perfil.direcciondomiciliaria }}</span>
+                        </div>
+                        {% if perfil.direcciontrabajo %}
+                        <div class="mb-2">
+                            <span class="info-label"><i class="fas fa-briefcase"></i> Trabajo:</span> 
+                            <span class="info-value">{{ perfil.direcciontrabajo }}</span>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="recursos">
-            <div class="section-header"><h2>Recursos Académicos</h2></div>
+        <section id="productos_academicos">
+            <div class="section-header"><h2>Productos Académicos</h2></div>
             <div class="info-card">
-                {% for rec in recursos %}
+                {% for prod in productos_academicos %}
                 <div class="recurso-item">
-                    <span class="recurso-titulo"><i class="{{ rec.icono }} me-2 text-primary"></i> {{ rec.titulo }}</span>
-                    {{ rec.descripcion }}
+                    <span class="recurso-titulo">
+                        <i class="fas fa-book me-2 text-primary"></i> {{ prod.nombrerecurso }}
+                    </span>
+                    <p class="mb-1 text-muted small"><i class="fas fa-tag"></i> {{ prod.clasificador }}</p>
+                    <p class="mb-0">{{ prod.descripcion }}</p>
                 </div>
                 {% empty %}
-                <p class="text-center text-muted">No hay recursos. ¡Agrégalos desde el Admin!</p>
+                <p class="text-center text-muted">No hay productos académicos registrados.</p>
                 {% endfor %}
             </div>
         </section>
@@ -201,32 +241,51 @@
             <div class="section-header"><h2>Experiencia Laboral</h2></div>
             <div class="info-card">
                 {% for exp in experiencias %}
-                <div class="exp-item border-start border-3 border-primary ps-3 mb-4">
-                    <h5 class="fw-bold">{{ exp.cargodesempenado }}</h5>
-                    <div class="text-primary mb-1">{{ exp.nombrempresa }}</div>
-                    <small class="text-muted d-block mb-2"><i class="far fa-calendar-alt"></i> {{ exp.fecha_inicio }}</small>
-                    <p class="mb-0 text-muted">{{ exp.logros }}</p>
-                </div>
+                    <div class="exp-item border-start border-3 border-primary ps-3 mb-4 pb-3" style="border-bottom: 1px dashed #eee;">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="fw-bold mb-0 text-dark">{{ exp.cargodesempenado }}</h5>
+                                <div class="text-primary fw-bold mb-1">
+                                    {{ exp.nombrempresa }} 
+                                    {% if exp.lugarempresa %}<span class="text-muted small fw-normal">| {{ exp.lugarempresa }}</span>{% endif %}
+                                </div>
+                            </div>
+                            <span class="badge bg-light text-dark border">
+                                <i class="far fa-calendar-alt"></i> {{ exp.fechainiciogestion|date:"M Y" }} - 
+                                {% if exp.fechafingestion %}{{ exp.fechafingestion|date:"M Y" }}{% else %}Presente{% endif %}
+                            </span>
+                        </div>
+                        <p class="mb-2 text-secondary mt-2">{{ exp.descripcionfunciones }}</p>
+                        <div class="bg-light p-2 rounded mt-2 small text-muted">
+                            <i class="fas fa-info-circle text-primary"></i> <strong>Referencia:</strong>
+                            {% if exp.nombrecontactoempresarial %}{{ exp.nombrecontactoempresarial }}{% endif %}
+                            {% if exp.telefonocontactoempresarial %} ({{ exp.telefonocontactoempresarial }}){% endif %}
+                            {% if exp.emailempresa %} - {{ exp.emailempresa }}{% endif %}
+                            {% if exp.sitiowebempresa %} 
+                                <br><a href="{{ exp.sitiowebempresa }}" target="_blank" class="text-decoration-none"><i class="fas fa-link"></i> Web Empresa</a>
+                            {% endif %}
+                        </div>
+                    </div>
                 {% empty %}
-                <p class="text-center text-muted">No hay experiencia registrada.</p>
+                    <p class="text-center text-muted">No hay experiencia registrada visible.</p>
                 {% endfor %}
             </div>
         </section>
 
-        <section id="educacion">
-            <div class="section-header"><h2>Formación Académica</h2></div>
+        <section id="productos_laborales">
+            <div class="section-header"><h2>Productos Laborales</h2></div>
             <div class="info-card">
-                {% for edu in educacion %}
-                <div class="d-flex align-items-center mb-4">
-                    <div class="bg-primary text-white rounded p-3 me-3"><i class="fas fa-graduation-cap fa-lg"></i></div>
+                {% for prod in productos_laborales %}
+                <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                    <div class="bg-success text-white rounded p-3 me-3"><i class="fas fa-hammer fa-lg"></i></div>
                     <div>
-                        <h5 class="mb-0 fw-bold">{{ edu.titulo }}</h5>
-                        <span class="text-muted d-block">{{ edu.institucion }}</span>
-                        <small class="text-secondary">{{ edu.fecha_inicio|date:"Y" }} - {% if edu.fecha_fin %}{{ edu.fecha_fin|date:"Y" }}{% else %}Presente{% endif %}</small>
+                        <h5 class="mb-0 fw-bold">{{ prod.nombreproducto }}</h5>
+                        <p class="text-muted mb-1">{{ prod.descripcion }}</p>
+                        <small class="text-secondary"><i class="far fa-calendar-alt"></i> {{ prod.fechaproducto|date:"d M Y" }}</small>
                     </div>
                 </div>
                 {% empty %}
-                <p class="text-center text-muted">No hay educación registrada.</p>
+                <p class="text-center text-muted">No hay productos laborales registrados.</p>
                 {% endfor %}
             </div>
         </section>
@@ -234,48 +293,71 @@
         <section id="reconocimientos">
             <div class="section-header"><h2>Cursos y Certificaciones</h2></div>
             <div class="row">
-                <div class="col-md-6 mb-3">
-                    <div class="info-card h-100 position-relative">
-                        <div class="icon-header text-warning"><i class="fas fa-award"></i> Certificación</div>
-                        <h5 class="fw-bold">English Intermediate (B1)</h5>
-                        <p class="text-muted">Universidad Laica Eloy Alfaro de Manabí (ULEAM)</p>
-                        <button class="btn btn-outline-primary btn-sm btn-ver-cert mt-2" type="button" data-bs-toggle="modal" data-bs-target="#certificadoModal" data-bs-img="{% static 'cert_ingles.png' %}">
-                            <i class="fas fa-eye"></i> Ver Credencial
-                        </button>
-                        <div class="pdf-visible-content"><img src="{% static 'cert_ingles.png' %}" class="cert-img-pdf" alt="Certificado Inglés"></div>
+                {% for rec in reconocimientos %}
+                    <div class="col-md-6 mb-4">
+                        <div class="info-card h-100 position-relative p-4 border-0 shadow-sm">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-primary rounded-pill">{{ rec.tiporeconocimiento }}</span>
+                                <small class="text-muted"><i class="far fa-calendar"></i> {{ rec.fechareconocimiento|date:"M Y" }}</small>
+                            </div>
+                            <h5 class="fw-bold text-dark mb-1">{{ rec.descripcionreconocimiento }}</h5>
+                            <p class="text-primary fw-bold mb-2">{{ rec.entidadpatrocinadora }}</p>
+                            {% if rec.rutacertificado %}
+                            <button class="btn btn-outline-dark btn-sm w-100 mt-3" type="button" data-bs-toggle="modal" data-bs-target="#certificadoModal" data-bs-img="{{ rec.rutacertificado.url }}">
+                                <i class="fas fa-eye"></i> Ver Credencial
+                            </button>
+                            <div class="pdf-visible-content"><img src="{{ rec.rutacertificado.url }}" class="cert-img-pdf" alt="Certificado"></div>
+                            {% endif %}
+                            {% if rec.nombrecontactoauspicia or rec.telefonocontactoauspicia %}
+                            <div class="mt-3 pt-2 border-top small text-muted">
+                                <i class="fas fa-info-circle"></i> 
+                                {{ rec.nombrecontactoauspicia|default:"" }} 
+                                {% if rec.telefonocontactoauspicia %}({{ rec.telefonocontactoauspicia }}){% endif %}
+                            </div>
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <div class="info-card h-100 position-relative">
-                        <div class="icon-header text-warning"><i class="fas fa-award"></i> Certificación</div>
-                        <h5 class="fw-bold">TITULO BACHILLER EN TI</h5>
-                        <p class="text-muted">Unidad Educativa Fiscal Manta</p>
-                        <button class="btn btn-outline-primary btn-sm btn-ver-cert mt-2" type="button" data-bs-toggle="modal" data-bs-target="#certificadoModal" data-bs-img="{% static 'cert_titulo.png' %}">
-                            <i class="fas fa-eye"></i> Ver Credencial
-                        </button>
-                        <div class="pdf-visible-content"><img src="{% static 'cert_titulo.png' %}" class="cert-img-pdf" alt="Certificado Título"></div>
-                    </div>
-                </div>
+                {% empty %}
+                    <div class="col-12"><p class="text-center text-muted">No hay reconocimientos visibles.</p></div>
+                {% endfor %}
             </div>
         </section>
 
-        <section id="habilidades">
-            <div class="section-header"><h2>Stack Tecnológico</h2></div>
+        <section id="cursos">
+            <div class="section-header"><h2>Cursos Realizados</h2></div>
             <div class="info-card">
-                <div class="icon-header"><i class="fas fa-rocket"></i> Competencias Clave</div>
-                <div class="tech-container">
-                    {% for hab in habilidades %}
-                    <button class="tech-badge border-0" type="button" data-bs-toggle="modal" data-bs-target="#skillModal" data-bs-nombre="{{ hab.nombre|escape }}" data-bs-nivel="{{ hab.porcentaje }}" data-bs-desc="{{ hab.descripcion|default:'Sin descripción.'|escape }}">
-                        <i class="fas fa-check-circle"></i> {{ hab.nombre }}
-                    </button>
-                    <div class="pdf-visible-content skill-item-pdf">
-                        <div class="skill-title-pdf"><i class="fas fa-check"></i> {{ hab.nombre }} ({{ hab.porcentaje }}%)</div>
-                        <div class="skill-desc-pdf">{{ hab.descripcion|default:"Manejo competente." }}</div>
+                {% for cur in cursos %}
+                    <div class="mb-4 pb-3 border-bottom">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap">
+                            <div>
+                                <h5 class="fw-bold mb-1 text-dark">{{ cur.nombrecurso }}</h5>
+                                <div class="text-primary fw-bold">
+                                    {{ cur.entidadpatrocinadora }}
+                                    <span class="badge bg-warning text-dark ms-2">{{ cur.totalhoras }} Horas</span>
+                                </div>
+                            </div>
+                            <small class="text-muted mt-1">
+                                <i class="far fa-calendar-alt"></i> {{ cur.fechainicio|date:"d M Y" }} - {{ cur.fechafin|date:"d M Y" }}
+                            </small>
+                        </div>
+                        <p class="mb-2 text-secondary mt-2 small fst-italic">{{ cur.descripcioncurso }}</p>
+                        <div class="bg-light p-2 rounded mt-2 small text-muted d-flex justify-content-between align-items-center flex-wrap">
+                            <div>
+                                <i class="fas fa-user-tie text-primary"></i> 
+                                {{ cur.nombrecontactoauspicia|default:"--" }} 
+                                {% if cur.telefonocontactoauspicia %}({{ cur.telefonocontactoauspicia }}){% endif %}
+                            </div>
+                            {% if cur.rutacertificado %}
+                            <button class="btn btn-sm btn-outline-primary mt-2 mt-md-0" data-bs-toggle="modal" data-bs-target="#certificadoModal" data-bs-img="{{ cur.rutacertificado.url }}">
+                                <i class="fas fa-file-certificate"></i> Ver Certificado
+                            </button>
+                            <div class="pdf-visible-content"><img src="{{ cur.rutacertificado.url }}" class="cert-img-pdf" alt="Certificado Curso"></div>
+                            {% endif %}
+                        </div>
                     </div>
-                    {% empty %}
-                    <p class="text-muted">No hay habilidades registradas.</p>
-                    {% endfor %}
-                </div>
+                {% empty %}
+                    <p class="text-muted text-center">No hay cursos registrados visibles.</p>
+                {% endfor %}
             </div>
         </section>
     </main>
@@ -289,30 +371,12 @@
                 </div>
                 <div class="modal-body">
                     <p class="text-muted small">Selecciona qué quieres ver en pantalla:</p>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="swGarage" checked onchange="toggleWeb('btnGarageTop', this.checked)">
-                        <label class="form-check-label">Ver Garage</label>
-                    </div>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="swRecursos" checked onchange="toggleWeb('nav-recursos', this.checked)">
-                        <label class="form-check-label">Ver Recursos</label>
-                    </div>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="swExp" checked onchange="toggleWeb('nav-experiencia', this.checked)">
-                        <label class="form-check-label">Ver Experiencia</label>
-                    </div>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="swEdu" checked onchange="toggleWeb('nav-educacion', this.checked)">
-                        <label class="form-check-label">Ver Educación</label>
-                    </div>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="swRec" checked onchange="toggleWeb('nav-reconocimientos', this.checked)">
-                        <label class="form-check-label">Ver Reconocimientos</label>
-                    </div>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input" type="checkbox" id="swHab" checked onchange="toggleWeb('nav-habilidades', this.checked)">
-                        <label class="form-check-label">Ver Habilidades</label>
-                    </div>
+                    <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox" id="swGarage" checked onchange="toggleWeb('btnGarageTop', this.checked)"><label class="form-check-label">Ver Garage</label></div>
+                    <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox" id="swProds" checked onchange="toggleWeb('nav-productos', this.checked)"><label class="form-check-label">Ver Productos Académicos</label></div>
+                    <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox" id="swExp" checked onchange="toggleWeb('nav-experiencia', this.checked)"><label class="form-check-label">Ver Experiencia</label></div>
+                    <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox" id="swLaboral" checked onchange="toggleWeb('nav-laborales', this.checked)"><label class="form-check-label">Ver Productos Laborales</label></div>
+                    <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox" id="swRec" checked onchange="toggleWeb('nav-reconocimientos', this.checked)"><label class="form-check-label">Ver Reconocimientos</label></div>
+                    <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox" id="swCursos" checked onchange="toggleWeb('nav-cursos', this.checked)"><label class="form-check-label">Ver Cursos</label></div>
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-primary w-100 rounded-pill" data-bs-dismiss="modal">Listo</button>
@@ -330,26 +394,11 @@
                 </div>
                 <div class="modal-body">
                     <p class="text-muted small">Elige las secciones para incluir en el PDF:</p>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input pdf-check" type="checkbox" checked data-target="recursos">
-                        <label class="form-check-label">Recursos Académicos</label>
-                    </div>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input pdf-check" type="checkbox" checked data-target="experiencia">
-                        <label class="form-check-label">Experiencia Laboral</label>
-                    </div>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input pdf-check" type="checkbox" checked data-target="educacion">
-                        <label class="form-check-label">Educación</label>
-                    </div>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input pdf-check" type="checkbox" checked data-target="reconocimientos">
-                        <label class="form-check-label">Reconocimientos</label>
-                    </div>
-                    <div class="form-check form-switch mb-2">
-                        <input class="form-check-input pdf-check" type="checkbox" checked data-target="habilidades">
-                        <label class="form-check-label">Habilidades</label>
-                    </div>
+                    <div class="form-check form-switch mb-2"><input class="form-check-input pdf-check" type="checkbox" checked data-target="productos_academicos"><label class="form-check-label">Productos Académicos</label></div>
+                    <div class="form-check form-switch mb-2"><input class="form-check-input pdf-check" type="checkbox" checked data-target="experiencia"><label class="form-check-label">Experiencia Laboral</label></div>
+                    <div class="form-check form-switch mb-2"><input class="form-check-input pdf-check" type="checkbox" checked data-target="productos_laborales"><label class="form-check-label">Productos Laborales</label></div>
+                    <div class="form-check form-switch mb-2"><input class="form-check-input pdf-check" type="checkbox" checked data-target="reconocimientos"><label class="form-check-label">Reconocimientos</label></div>
+                    <div class="form-check form-switch mb-2"><input class="form-check-input pdf-check" type="checkbox" checked data-target="cursos"><label class="form-check-label">Cursos</label></div>
                 </div>
                 <div class="modal-footer border-0">
                     <button type="button" class="btn btn-danger w-100 rounded-pill" onclick="generarPDFManaged()">Descargar PDF</button>
@@ -367,24 +416,24 @@
                 </div>
                 <div class="modal-body bg-light p-4">
                     <div class="row">
-                        {% for prod in productos %}
+                        {% for prod in productos_garage %}
                         <div class="col-md-4 mb-4">
-                            <div class="product-card">
-                                <img src="{% if prod.imagen %}{{ prod.imagen.url }}{% else %}{% static 'ventilador.jpg' %}{% endif %}" 
-                                     class="product-img" alt="{{ prod.nombre }}" 
-                                     onerror="this.src='{% if 'aptop' in prod.nombre %}{% static 'laptop.jpg' %}{% elif 'ouse' in prod.nombre %}{% static 'mouse.jpg' %}{% else %}{% static 'ventilador.jpg' %}{% endif %}'">
-                                <h5 class="fw-bold text-dark">{{ prod.nombre }}</h5>
+                            <div class="product-card position-relative">
+                                <span class="badge-estado {% if prod.estadoproducto == 'Bueno' %}bg-bueno{% else %}bg-regular{% endif %}">
+                                    {{ prod.estadoproducto }}
+                                </span>
+
+                                <img src="{% if prod.imagen %}{{ prod.imagen.url }}{% else %}{% static 'ventilador.jpg' %}{% endif %}" class="product-img" alt="{{ prod.nombreproducto }}" onerror="this.src='{% static 'ventilador.jpg' %}'">
+                                
+                                <h5 class="fw-bold text-dark mt-2">{{ prod.nombreproducto }}</h5>
                                 <p class="text-muted small">{{ prod.descripcion|truncatechars:50 }}</p>
-                                <div class="product-price">${{ prod.precio }}</div>
-                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white" onclick="alert('¡{{ prod.nombre|escapejs }} agregado al carrito!')">
-                                    <i class="fas fa-cart-plus"></i> Comprar
-                                </button>
+                                <div class="product-price">${{ prod.valordelbien }}</div>
+                                <button class="btn btn-warning w-100 fw-bold rounded-pill text-white" onclick="alert('¡{{ prod.nombreproducto|escapejs }} agregado al carrito!')"><i class="fas fa-cart-plus"></i> Comprar</button>
                             </div>
                         </div>
                         {% empty %}
                         <div class="col-12 text-center py-5">
                             <h4 class="text-muted">Este garage está vacío para este perfil.</h4>
-                            <p>Agrega productos en el Admin asignándolos a {{ perfil.nombres }}.</p>
                         </div>
                         {% endfor %}
                     </div>
@@ -404,31 +453,8 @@
         </div>
     </div>
 
-    <div class="modal fade" id="skillModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title fw-bold" id="skillTitle">...</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-4 text-center">
-                    <h6 class="text-muted mb-3">Nivel de Dominio</h6>
-                    <div class="progress mb-4" style="height: 25px; border-radius: 15px; background-color: #e9ecef;">
-                        <div id="skillBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 0%">0%</div>
-                    </div>
-                    <p id="skillDesc" class="lead text-dark" style="font-size: 1.1rem;">...</p>
-                </div>
-                <div class="modal-footer border-0 justify-content-center">
-                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            
-            // 1. Configuración del Menú WEB (Visualización en pantalla)
             window.toggleWeb = function(elementId, isChecked) {
                 const el = document.getElementById(elementId);
                 if(el) {
@@ -437,7 +463,6 @@
                 }
             };
 
-            // 2. Navegación entre pestañas
             window.mostrarSeccion = function(idSeccion, elementoBtn) {
                 document.querySelectorAll('section').forEach(sec => sec.classList.remove('active-section'));
                 document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
@@ -458,22 +483,7 @@
                     if(modalImg) modalImg.src = imagenSrc;
                 });
             }
-            const skillModal = document.getElementById('skillModal');
-            if (skillModal) {
-                skillModal.addEventListener('show.bs.modal', function (event) {
-                    const button = event.relatedTarget;
-                    const nombre = button.getAttribute('data-bs-nombre');
-                    const nivel = button.getAttribute('data-bs-nivel');
-                    const desc = button.getAttribute('data-bs-desc');
-                    skillModal.querySelector('#skillTitle').textContent = nombre;
-                    skillModal.querySelector('#skillDesc').textContent = desc;
-                    const bar = skillModal.querySelector('#skillBar');
-                    bar.style.width = nivel + '%';
-                    bar.textContent = nivel + '%';
-                });
-            }
 
-            // 3. GENERACIÓN DE PDF SEGURA (SOLUCIÓN AL CONGELAMIENTO)
             window.generarPDFManaged = function() {
                 const modalEl = document.getElementById('pdfConfigModal');
                 const modal = bootstrap.Modal.getInstance(modalEl);
@@ -491,7 +501,7 @@
                     const target = document.getElementById(chk.getAttribute('data-target'));
                     if(target) {
                         if(!chk.checked) target.classList.add('d-none-pdf');
-                        else target.style.display = 'block'; // Forzar vista para PDF
+                        else target.style.display = 'block'; 
                     }
                 });
 
@@ -516,8 +526,6 @@
             function limpiarTodo(btn, originalText) {
                 document.body.classList.remove('generating-pdf');
                 if(btn) btn.innerHTML = originalText;
-                
-                // BORRA TODOS LOS ESTILOS FORZADOS PARA QUE VUELVAN LAS PESTAÑAS
                 document.querySelectorAll('section').forEach(sec => {
                     sec.style.display = ''; 
                     sec.classList.remove('d-none-pdf');
