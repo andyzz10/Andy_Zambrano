@@ -12,8 +12,6 @@ class Task(models.Model):
     datecompleted = models.DateTimeField(null=True, blank=True)
     important = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    #validacionfechanacimiento
-    
 
     def __str__(self):
         return self.title + ' - by ' + self.user.username
@@ -52,20 +50,16 @@ class DatosPersonales(models.Model):
 
     mostrar_botones = models.BooleanField(default=True, verbose_name="Mostrar Botones Superiores")
     foto_portada = models.ImageField(upload_to='portadas/', verbose_name="Foto de Portada", blank=True, null=True)
-#ValidacionFechaNacimiento
-    # ... (tus campos anteriores: mostrar_garage, foto_portada, etc.) ...
 
+    # Validación de Fecha de Nacimiento
     def clean(self):
-        # Validación: Fecha de nacimiento no puede ser futura
         if self.fechanacimiento and self.fechanacimiento > date.today():
             raise ValidationError({'fechanacimiento': "⛔ Error: ¡No puedes nacer en el futuro! Ingresa una fecha válida."})
 
     def save(self, *args, **kwargs):
-        self.full_clean() # Esto obliga a ejecutar la validación antes de guardar
+        self.full_clean()
         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return f"{self.nombres} {self.apellidos}"
     def __str__(self):
         return f"{self.nombres} {self.apellidos}"
 
@@ -87,9 +81,21 @@ class ExperienciaLaboral(models.Model):
 
     def __str__(self):
         return f"{self.cargodesempenado} en {self.nombrempresa}"
+
+    # --- VALIDACIÓN DE FECHAS EN EXPERIENCIA ---
     def clean(self):
+        # 1. Validar que la fecha de INICIO no sea futura
+        if self.fechainiciogestion and self.fechainiciogestion > date.today():
+            raise ValidationError({'fechainiciogestion': "⛔ Error: La fecha de inicio no puede ser futura."})
+
+        # 2. Validar que la fecha de FIN no sea futura (si existe)
+        if self.fechafingestion and self.fechafingestion > date.today():
+            raise ValidationError({'fechafingestion': "⛔ Error: La fecha de fin no puede ser futura."})
+
+        # 3. Validar coherencia (Fin debe ser después de Inicio)
         if self.fechafingestion and self.fechainiciogestion and self.fechafingestion < self.fechainiciogestion:
-            raise ValidationError("⛔ Error: La fecha de fin no puede ser anterior a la de inicio.")
+            raise ValidationError("⛔ Error Lógico: Terminaste el trabajo antes de empezarlo. Revisa las fechas.")
+
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)
@@ -146,7 +152,7 @@ class ProductoLaboral(models.Model):
     def __str__(self):
         return self.nombreproducto
 
-# --- VENTA GARAGE (NUEVO MODELO - REEMPLAZA A ProductoGarage) ---
+# --- VENTA GARAGE ---
 class VentaGarage(models.Model):
     perfil = models.ForeignKey(DatosPersonales, on_delete=models.CASCADE, related_name='ventas_garage')
     nombreproducto = models.CharField(max_length=100, verbose_name="Nombre del Producto")

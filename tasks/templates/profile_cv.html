@@ -476,10 +476,11 @@
                                 </span>
 
                                 <img 
-    src="{% if prod.imagen %}{{ prod.imagen.url }}{% else %}{% if 'ouse' in prod.nombreproducto|lower %}{% static 'mouse.jpg' %}{% elif 'aptop' in prod.nombreproducto|lower %}{% static 'laptop.jpg' %}{% else %}{% static 'ventilador.jpg' %}{% endif %}{% endif %}" 
+    src="{% if prod.imagen %}{{ prod.imagen.url }}{% else %}{% if 'ventilador' in prod.nombreproducto|lower %}{% static 'ventilador.jpg' %}{% elif 'ouse' in prod.nombreproducto|lower %}{% static 'mouse.jpg' %}{% elif 'aptop' in prod.nombreproducto|lower %}{% static 'laptop.jpg' %}{% else %}{% static 'ventilador.jpg' %}{% endif %}{% endif %}" 
     class="product-img" 
     alt="{{ prod.nombreproducto }}" 
-    onerror="this.onerror=null;this.src='{% if 'ouse' in prod.nombreproducto|lower %}{% static 'mouse.jpg' %}{% elif 'aptop' in prod.nombreproducto|lower %}{% static 'laptop.jpg' %}{% else %}{% static 'ventilador.jpg' %}{% endif %}'"
+    onerror="this.onerror=null;this.src='{% if 'ventilador' in prod.nombreproducto|lower %}{% static 'ventilador.jpg' %}{% elif 'ouse' in prod.nombreproducto|lower %}{% static 'mouse.jpg' %}{% elif 'aptop' in prod.nombreproducto|lower %}{% static 'laptop.jpg' %}{% else %}{% static 'ventilador.jpg' %}{% endif %}'"
+>
 >
                                 
                                 <h5 class="fw-bold text-dark mt-2">{{ prod.nombreproducto }}</h5>
